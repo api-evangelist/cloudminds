@@ -1,0 +1,29 @@
+generated: '2026-07-18'
+method: searched
+source: https://pypi.org/project/harix/
+description: >-
+  First-party CloudMinds (Dataa Robotics) developer libraries. CloudMinds does
+  not publish a public REST API surface; its developer offering is the HARIX
+  Robot Development Kit (RDK). Verified against PyPI and the HarixRDK GitHub
+  organization at fetch time. The published Python SDK ("Harix Skill Robot SDK")
+  is authored by CloudMinds (harix@cloudminds.com) with homepage cloudminds.com;
+  last release 1.0.9 (2020-02-17). Only libraries confirmed first-party are
+  marked official:true.
+packages:
+  - language: python
+    registry: pypi
+    name: harix
+    url: https://pypi.org/project/harix/
+    source: https://harix.cloudminds.com/
+    install: pip install harix
+    version: 1.0.9
+    license: MIT
+    description: HARIX Skill Robot SDK — development kit for building CloudMinds robot skills.
+    author: CloudMinds (harix@cloudminds.com)
+    official: true
+repositories:
+  - name: HarixRDK/coffeehouse
+    url: https://github.com/HarixRDK/coffeehouse
+    description: CloudMinds Robotics Development Kit (RDK).
+    license: Apache-2.0
+    official: true

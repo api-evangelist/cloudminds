@@ -1,8 +1,26 @@
 aid: cloudminds
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cloudminds.png
 name: CloudMinds
-description: 'CloudMinds is a company surfaced as a portfolio company of softbank-vision-fund and added
-  to the API Evangelist network as a stub for enrichment. Sector: frontier-tech. This profile is a lead
-  awaiting the enrichment pipeline.'
+description: 'CloudMinds (Dataa Robotics / 达闼科技) is a cloud-robotics company founded in 2015 with
+  dual headquarters in Beijing, China and Irvine, California, backed by SoftBank and Foxconn. It builds
+  cloud-connected smart machines and the HARIX ("Human Augmented Robot Intelligence with eXtreme reality")
+  cloud AI robot brain, operating cloud robots over its Mobile-intranet Cloud Services (MCS) and Virtual
+  Backbone Network (VBN). Its developer offering is the HARIX Robot Development Kit (RDK) — an app behavior
+  blueprint editor, motion/dance editor, scene-map tools, and a robot simulation/training platform —
+  distributed through the HARIX RDK portal, the HarixRDK GitHub organization, and the official "harix"
+  Python SDK on PyPI. CloudMinds does not publish a public REST API; it exposes flexible APIs and
+  middleware to integrate robots with legacy systems. Added to the U.S. BIS Entity List in May 2020.'
 url: https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -12,13 +30,45 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
 tags:
 - Company
 - Frontier Tech
+- Robotics
+- Cloud Robotics
+- Artificial Intelligence
+- Robot Development Kit
+- HARIX
 apis: []
+common:
+- type: Website
+  url: https://cloudminds.com/en
+  name: CloudMinds (Dataa Robotics)
+- type: DeveloperPortal
+  url: https://harix.cloudminds.com/
+  name: HARIX RDK Portal
+- type: GitHubOrganization
+  url: https://github.com/HarixRDK
+  name: HarixRDK
+- type: GitHubOrganization
+  url: https://github.com/CloudmindsRobot
+  name: Cloudminds Robot Inc
+- type: Support
+  url: mailto:robotsupport@cloudminds.com
+  name: Robot Support
+- type: Packages
+  url: packages/cloudminds-packages.yml
+  name: CloudMinds Packages
+- type: SDKs
+  url: packages/cloudminds-packages.yml
+  name: HARIX Skill Robot SDK (Python)
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence
