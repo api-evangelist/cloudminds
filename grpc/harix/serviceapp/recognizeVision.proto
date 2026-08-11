@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package serviceapp;
+
+import "common/common.proto";
+import "vision/vision.proto";
+import "google/protobuf/struct.proto";
+
+option java_package = "com.cloudminds.harix.serviceapp";
+option java_outer_classname = "VisionToServiceAPP";
+
+message ImageInfo {
+  message Body {
+    skill.vision.RecognizeType type = 2;
+    string image_url = 3;
+    int32 flag = 4;
+    skill.vision.PersonStatus status = 5;
+    map<string, string> option = 6;
+    common.Extra extra = 7;
+    repeated string image_urls = 100;
+    repeated bytes image = 101;
+  }
+  common.CommonReqInfo common_req_info = 1;
+  serviceapp.ImageInfo.Body body = 2;
+}
+
+message VisionRequest {
+  common.CommonReqInfo common_req_info = 1;
+  serviceapp.ImageInfo.Body image_info = 2;
+  string nothing = 10;
+  skill.vision.ImageResponse.Ocr ocr = 11;
+  skill.vision.ImageResponse.Money money = 12;
+  skill.vision.ImageResponse.CarPlate car_plate = 13;
+  skill.vision.ImageResponse.Object object = 14;
+  skill.vision.ImageResponse.Face face = 15;
+  skill.vision.ImageResponse.FaceAttr face_attr = 16;
+  skill.vision.ImageResponse.Caption caption = 17;
+  skill.vision.ImageResponse.Classify classify = 18;
+  skill.vision.ImageResponse.Fall fall = 19;
+  skill.vision.ImageResponse.Compare compare = 20;
+  skill.vision.ImageResponse.Vending vending = 21;
+}
+
+message VisionResponse {
+  message Propose {
+    bool do_recognize = 1;
+    string app_key = 2;
+    string app_secret = 3;
+    string faceset_id = 4;
+  }
+  common.CommonRspInfo common_resp_info = 1;
+  string nothing = 2;
+  serviceapp.VisionResponse.Propose propose = 3;
+}
+
+message EventResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+}
+
+service Vision {
+  rpc BeforeRecognize (serviceapp.ImageInfo) returns (serviceapp.VisionResponse) {}
+  rpc CompleteRecognize (serviceapp.VisionRequest) returns (serviceapp.VisionResponse) {}
+  rpc OcrEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc MoneyEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc CarPlateEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc ObjectEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc FaceEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc FaceAttrEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc CaptionEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc ClassifyEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc FallEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc CompareEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+  rpc VendingEvent (serviceapp.VisionRequest) returns (serviceapp.EventResponse) {}
+}

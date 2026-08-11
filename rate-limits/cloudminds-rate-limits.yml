@@ -1,0 +1,17 @@
+generated: '2026-08-10'
+method: searched
+source: https://www.dataarobotics.com/en, grpc/harix/**/*.proto
+limit_count: 0
+limits: []
+headers: []
+exhaustion_status: null
+note: >-
+  No rate limits are published anywhere public, and none are expressible in the contract as shipped:
+  there is no quota, throttle, retry-after or backoff field in any of the 121 protobuf messages, and the
+  response envelope common.CommonRspInfo carries only err_code / err_msg / err_detail with no published
+  code registry — so an agent cannot distinguish a throttle from any other failure. The transport is
+  gRPC, so HTTP RateLimit-* / X-RateLimit-* headers would ride as trailers or metadata; the first-party
+  SDK reads neither. An honest zero, recorded rather than omitted.
+evidence:
+- {url: 'https://www.dataarobotics.com/en', status: 200, finding: no developer documentation of any kind on the corporate site}
+- {url: 'https://harix.dataarobotics.com/#/index/community/home', status: 000, finding: developer portal unreachable (TCP timeout)}

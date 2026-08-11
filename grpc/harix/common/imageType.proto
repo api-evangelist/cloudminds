@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package common;
+
+option java_package = "com.cloudminds.harix.common";
+option java_outer_classname = "CommonImageTypeProto";
+
+enum ImageType {
+  TEXT = 0;
+  MONEY = 1;
+  CAR_PLATE = 2;
+  IMAGE = 3;
+  FACE = 4;
+  FALL = 5;
+}

@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package robotSkillApi;
+
+import "common/common.proto";
+
+option go_package = "cloudminds.com/harix/harix-skill-robot/proto/robot-skill-api";
+
+message MapRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string query_type = 2;
+  string map_id = 3;
+  string map_name = 4;
+}
+
+message Location {
+  common.CommonReqInfo common_req_info = 1;
+  string location_id = 2;
+  robotSkillApi.Point point = 3;
+}
+
+message GetPatrolRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string query_type = 2;
+  string map_id = 3;
+  string map_name = 4;
+  string route_id = 5;
+  string route_name = 6;
+}
+
+message NavigateBaseResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  string result = 2;
+}
+
+message PatrolRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string map_id = 2;
+  string map_name = 3;
+  string route_id = 4;
+  string route_name = 5;
+  string mode = 6;
+  string start_time = 7;
+  string end_time = 8;
+  int32 patrol_times = 9;
+  repeated robotSkillApi.Point points = 10;
+  repeated string locations = 11;
+}
+
+message EnableCalibrationPointsRequest {
+  common.CommonReqInfo common_req_info = 1;
+  bool enable_calibration_points = 2;
+}
+
+message Point {
+  string mapId = 1;
+  string mapName = 2;
+  double x = 3;
+  double y = 4;
+  double yaw = 5;
+  double theta = 6;
+  double pitch = 7;
+}
+
+message MoveToRequest {
+  common.CommonReqInfo common_req_info = 1;
+  int32 mode = 2;
+  double angle = 3;
+  int32 speed = 4;
+  robotSkillApi.Point point = 5;
+  string location_id = 6;
+}
+
+message MoveByPathRequest {
+  common.CommonReqInfo common_req_info = 1;
+  int32 mode = 2;
+  int32 speed = 3;
+  int32 patrol_times = 4;
+  repeated robotSkillApi.Point points = 5;
+  repeated string locations = 6;
+}
+
+message SetRobotLocationRequest {
+  common.CommonReqInfo common_req_info = 1;
+  robotSkillApi.Point point = 2;
+}
+
+message QueryRobotLocationRequest {
+  common.CommonReqInfo common_req_info = 1;
+}
+
+message Position {
+  float x = 1;
+  float y = 2;
+  float theta = 3;
+}
+
+message ChargingSiteRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string charging_site_name = 2;
+  robotSkillApi.Position position = 3;
+}
+
+message ProgramRequest {
+  common.CommonReqInfo common_req_info = 1;
+  robotSkillApi.ProgramData program_data = 2;
+}
+
+message ProgramData {
+  string programType = 1;
+  string mapId = 2;
+  string mapName = 3;
+  string programId = 4;
+  string programName = 5;
+  string startTime = 6;
+  string endTime = 7;
+  int32 interval = 8;
+  repeated robotSkillApi.Point points = 9;
+  repeated string locations = 10;
+}
+
+service RobotNavigateService {
+  rpc GetRobotMapList (robotSkillApi.MapRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc GetMapLocation (robotSkillApi.MapRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc GetPatrolRoute (robotSkillApi.GetPatrolRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc DeleteRobotMap (robotSkillApi.MapRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc setActiveMap (robotSkillApi.MapRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc NotifyMapUpdated (robotSkillApi.MapRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc StartPatrol (robotSkillApi.PatrolRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc PausePatrol (robotSkillApi.PatrolRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc ResumePatrol (robotSkillApi.PatrolRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc StopPatrol (robotSkillApi.PatrolRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc EnableCalibrationPoints (robotSkillApi.EnableCalibrationPointsRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc MoveTo (robotSkillApi.MoveToRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc MoveByPath (robotSkillApi.MoveByPathRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc SetRobotLocation (robotSkillApi.SetRobotLocationRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc QueryRobotLocation (robotSkillApi.QueryRobotLocationRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc SetDefaultChargingSite (robotSkillApi.ChargingSiteRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc AttachChargingPile (robotSkillApi.ChargingSiteRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc DetachChargingPile (robotSkillApi.ChargingSiteRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+  rpc RunProgram (robotSkillApi.ProgramRequest) returns (robotSkillApi.NavigateBaseResponse) {}
+}

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package common;
+
+option java_package = "com.cloudminds.harix.common";
+option java_outer_classname = "CommonProto";
+option go_package = "cloudminds.com/harix/harix-skill-robot/proto/common";
+
+message CommonReqInfo {
+  string guid = 1;
+  int64 timestamp = 2;
+  string version = 3;
+  string tenant_id = 4;
+  string user_id = 5;
+  string robot_id = 6;
+  string robot_type = 7;
+  string service_code = 8;
+  string seq = 9;
+  string root_guid = 10;
+}
+
+message CommonRspInfo {
+  int32 err_code = 1;
+  string err_msg = 2;
+  string err_detail = 3;
+}
+
+message Extra {
+  string extra_type = 1;
+  string extra_body = 2;
+}

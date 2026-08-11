@@ -1,0 +1,64 @@
+generated: '2026-08-10'
+method: derived
+source: grpc/harix/**/*.proto, harix 1.0.9 SDK, https://www.dataarobotics.com/en (probed 2026-08-10)
+note: >-
+  Derived from the provider's own compiled protobuf contract plus a probe of the live corporate site.
+  CloudMinds/Dataa Robotics publishes no compliance program, no certifications page and no trust center,
+  so no `Compliance` pointer is emitted — only the standards its contract demonstrably does or does not
+  implement are asserted here.
+standards:
+- id: protobuf3
+  conforms: true
+  evidence: every FileDescriptorProto in grpc/ declares syntax "proto3"
+- id: grpc
+  conforms: true
+  evidence: 14 services / 88 RPCs defined across the descriptors; SDK depends on grpcio 1.24.3
+- id: grpc-server-reflection
+  conforms: false
+  evidence: no grpc.reflection service is defined or depended on; the contract is only discoverable via the SDK
+- id: grpc-health-checking
+  conforms: false
+  evidence: no grpc.health.v1.Health service is defined
+- id: openapi
+  conforms: false
+  evidence: no OpenAPI/Swagger document found on any host probed 2026-08-10 (see x-coverage in apis.yml)
+- id: asyncapi
+  conforms: false
+  evidence: an event surface exists (asyncapi/cloudminds-harix-events.yml) but no AsyncAPI document is published
+- id: oauth2
+  conforms: false
+  evidence: no oauth2 flow, token endpoint or scope appears in the contract or the SDK
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration 404s on www.dataarobotics.com
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors ride in a protobuf common.CommonRspInfo {err_code, err_msg, err_detail}, not application/problem+json
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on www.dataarobotics.com
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no deprecation or sunset signalling in the contract or on any published page
+- id: tls
+  conforms: false
+  evidence: >-
+    The API transport is not TLS-protected — the first-party SDK builds every channel with
+    grpc.insecure_channel. (The marketing site www.dataarobotics.com itself does serve TLSv1.3 with
+    HSTS; see security/cloudminds-domain-security.yml. The two are different surfaces.)
+- id: semver
+  conforms: partial
+  evidence: the PyPI SDK versions as semver (1.0.1 → 1.0.9); the protobuf packages carry no version segment
+compliance_program:
+  published: false
+  certifications: []
+  trust_center: null
+  evidence:
+  - {url: 'https://trust.dataarobotics.com/', status: 000, note: no such host/connection}
+  - {url: 'https://www.dataarobotics.com/en/security', status: 404}
+  - {url: 'https://www.dataarobotics.com/en/privacy', status: 404}
+  note: >-
+    The only governance document the company publishes publicly is a Chinese-language privacy policy PDF
+    linked from the site footer. Separately, CloudMinds Technology Inc. and affiliates were added to the
+    U.S. Bureau of Industry and Security Entity List in May 2020 — a trade-control fact about the
+    company, not a conformance claim about its API.

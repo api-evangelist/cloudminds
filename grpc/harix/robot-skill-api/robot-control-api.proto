@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package robotSkillApi;
+
+import "common/common.proto";
+
+option go_package = "cloudminds.com/harix/harix-skill-robot/proto/robot-skill-api";
+
+message RobotRequest {
+  common.CommonReqInfo common_req_info = 1;
+}
+
+message RobotResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  string result = 2;
+}
+
+message RecognizeRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string object_type = 2;
+}
+
+message IntentRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string intent_type = 2;
+  string param = 3;
+}
+
+message ActionRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string action = 2;
+  string text = 3;
+  string source = 4;
+  map<string, string> param = 5;
+}
+
+message SendDataRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string action = 2;
+  string param = 3;
+}
+
+message MoveRequest {
+  common.CommonReqInfo common_req_info = 1;
+  robotSkillApi.MapModel map_model = 3;
+  robotSkillApi.VelocityModel v_model = 4;
+}
+
+message MapModel {
+  double angle = 1;
+  int32 speed = 2;
+  int32 distance = 3;
+}
+
+message VelocityModel {
+  double vx = 1;
+  double vy = 2;
+  double vw = 3;
+}
+
+message RotateRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string module = 2;
+  double degree = 3;
+  double pitch = 4;
+  int32 speed = 5;
+}
+
+message PositionRequest {
+  common.CommonReqInfo common_req_info = 1;
+  robotSkillApi.RobotPosition position = 2;
+}
+
+message EmergencyStopRequest {
+  common.CommonReqInfo common_req_info = 1;
+  bool emergency_stop_switch = 2;
+}
+
+message RobotPosition {
+  float x = 1;
+  float y = 2;
+  float theta = 3;
+}
+
+message ScreenShot {
+  string filename = 1;
+}
+
+message ShortVideo {
+  int32 duration = 1;
+  string filename = 2;
+}
+
+message Cache {
+  bool enable = 1;
+  int32 duration = 2;
+}
+
+message CameraConfig {
+  string name = 1;
+  bool grabber = 2;
+  robotSkillApi.ScreenShot screenshot = 3;
+  robotSkillApi.ShortVideo shortVideo = 4;
+  robotSkillApi.Cache cache = 5;
+}
+
+message StartScreenShotRequest {
+  common.CommonReqInfo common_req_info = 1;
+  repeated robotSkillApi.CameraConfig camera_configs = 2;
+}
+
+service RobotControlService {
+  rpc RebootRcu (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc ShutdownRcu (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc RestartApp (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc LockRcuScreen (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc LightRcuScreen (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc ShutdownRobot (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc WakeupRobot (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc ResetRobot (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc RebootRobot (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc ReconnectRobot (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc GetRobotActions (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc DoIntent (robotSkillApi.IntentRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc DoAction (robotSkillApi.ActionRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc SendData (robotSkillApi.SendDataRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc Move (robotSkillApi.MoveRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc Stop (robotSkillApi.RobotRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc Rotate (robotSkillApi.RotateRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc SetPosition (robotSkillApi.PositionRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc EmergencyStop (robotSkillApi.EmergencyStopRequest) returns (robotSkillApi.RobotResponse) {}
+  rpc StartScreenShot (robotSkillApi.StartScreenShotRequest) returns (robotSkillApi.RobotResponse) {}
+}

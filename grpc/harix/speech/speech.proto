@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package skill.asr;
+
+import "common/common.proto";
+import "google/protobuf/struct.proto";
+
+option java_package = "com.cloudminds.harix.skill.asr";
+option java_outer_classname = "SpeechProto";
+
+message Body {
+  message Data {
+    int32 rate = 1;
+    string format = 2;
+    string account = 3;
+    string language = 4;
+    string dialect = 5;
+    string vendor = 6;
+    int32 channel = 7;
+    int32 duration = 8;
+    int32 flag = 9;
+    bytes speech = 10;
+  }
+  enum Type {
+    BLOCK = 0;
+    STREAMING = 1;
+  }
+  skill.asr.Body.Type type = 9;
+  string sid = 10;
+  string app_type = 11;
+  string tag = 12;
+  int32 stream_flag = 13;
+  map<string, string> option = 14;
+  skill.asr.Body.Data data = 15;
+}
+
+message RecognitionRequest {
+  common.CommonReqInfo common_req_info = 1;
+  skill.asr.Body body = 2;
+  common.Extra extra = 3;
+}
+
+message RecognitionResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  bool is_noise = 3;
+  string question_id = 4;
+}
+
+service Speech {
+  rpc Recognize (skill.asr.RecognitionRequest) returns (skill.asr.RecognitionResponse) {}
+  rpc StreamingRecognize (stream skill.asr.RecognitionRequest) returns (stream skill.asr.RecognitionResponse) {}
+}

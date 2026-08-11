@@ -1,0 +1,267 @@
+generated: '2026-08-10'
+method: derived
+source: https://files.pythonhosted.org/packages/c9/54/b03c5a4f2261a6a7a02551d16d4cdc17dd83267c55709edc2c5151f2ee73/harix-1.0.9.tar.gz
+format: proto3
+transport: gRPC
+license: MIT
+note: >-
+  CloudMinds (Dataa Robotics) publishes no .proto files and no OpenAPI. This tree was decoded from the
+  compiled protobuf FileDescriptorProto payloads embedded in the *_pb2.py modules of the first-party
+  "harix" Python SDK (Harix Skill Robot SDK 1.0.9, published to PyPI by CloudMinds
+  <harix@cloudminds.com>, 2020-02-17). Each descriptor is the provider's own compiled contract, so
+  package names, message field names/numbers/types, service names and RPC signatures are faithful to
+  the source; only comments, and the original file ordering of options, are lost in compilation. The
+  upstream directory layout (as recorded in each descriptor's `name`) is preserved under grpc/harix/ so
+  `protoc -I grpc/harix` resolves every import. Field labels are rendered per proto3 semantics
+  (implicit presence, no `optional` keyword) matching the descriptors' `syntax: proto3`.
+validation:
+  tool: grpc_tools.protoc (grpcio-tools)
+  command: protoc -I grpc/harix --python_out=... $(find grpc/harix -name '*.proto')
+  result: all 18 files compile clean
+  date: '2026-08-10'
+  warnings:
+  - 'robot-mind/robotmind.proto:5 — import common/common.proto is unused (faithful to the original descriptor, not a decode artifact)'
+decoded_from:
+  package: harix
+  version: 1.0.9
+  registry: pypi
+  published: '2020-02-17'
+  modules: 18
+summary:
+  files: 18
+  services: 14
+  rpcs: 88
+  messages: 121
+  streaming_rpcs: 2
+service_groups:
+- name: Robot Skill API
+  package: robotSkillApi
+  description: Direct control, navigation, configuration, TTS and operator hand-off for a cloud robot.
+  services: [RobotControlService, RobotNavigateService, RobotConfigService, RobotTtsService, RobotOperatorService]
+- name: Robot Mind
+  package: robotmind
+  description: Skill registration and action dispatch between HARIX and a skill application.
+  services: [RobotMindService, RobotSkillService]
+- name: Speech
+  package: skill.asr
+  description: Speech recognition (unary + bidirectional streaming) and per-skill ASR enablement.
+  services: [Speech, EnableSpeech]
+- name: Vision
+  package: skill.vision
+  description: Vision recognition — OCR, money, car plate, object, face, face attributes, caption, classification, fall detection, comparison and vending detection.
+  services: [Vision, EnableVision]
+- name: NLU
+  package: skill.nlu
+  description: Natural-language intent detection.
+  services: [NLU]
+- name: Service App callbacks
+  package: serviceapp
+  description: Push/callback services a skill application implements so HARIX can deliver recognition results and vision events back to it.
+  services: [Speech, Vision]
+files:
+- file: harix/common/common.proto
+  package: common
+  syntax: proto3
+  messages: 3
+  services: []
+- file: harix/common/sw-common.proto
+  package: common
+  syntax: proto3
+  messages: 29
+  services: []
+- file: harix/common/qa.proto
+  package: common
+  syntax: proto3
+  messages: 1
+  services: []
+- file: harix/common/imageType.proto
+  package: common
+  syntax: proto3
+  messages: 0
+  services: []
+- file: harix/robot-skill-api/robot-control-api.proto
+  package: robotSkillApi
+  syntax: proto3
+  messages: 18
+  services:
+  - name: RobotControlService
+    rpcs:
+    - RebootRcu
+    - ShutdownRcu
+    - RestartApp
+    - LockRcuScreen
+    - LightRcuScreen
+    - ShutdownRobot
+    - WakeupRobot
+    - ResetRobot
+    - RebootRobot
+    - ReconnectRobot
+    - GetRobotActions
+    - DoIntent
+    - DoAction
+    - SendData
+    - Move
+    - Stop
+    - Rotate
+    - SetPosition
+    - EmergencyStop
+    - StartScreenShot
+- file: harix/robot-skill-api/robot-navigate-api.proto
+  package: robotSkillApi
+  syntax: proto3
+  messages: 15
+  services:
+  - name: RobotNavigateService
+    rpcs:
+    - GetRobotMapList
+    - GetMapLocation
+    - GetPatrolRoute
+    - DeleteRobotMap
+    - setActiveMap
+    - NotifyMapUpdated
+    - StartPatrol
+    - PausePatrol
+    - ResumePatrol
+    - StopPatrol
+    - EnableCalibrationPoints
+    - MoveTo
+    - MoveByPath
+    - SetRobotLocation
+    - QueryRobotLocation
+    - SetDefaultChargingSite
+    - AttachChargingPile
+    - DetachChargingPile
+    - RunProgram
+- file: harix/robot-skill-api/robot-config-api.proto
+  package: robotSkillApi
+  syntax: proto3
+  messages: 9
+  services:
+  - name: RobotConfigService
+    rpcs:
+    - ConfigRobot
+    - GetRobotState
+    - ConfigRecordMedia
+    - ConfigAsr
+    - ConfigFr
+    - ConfigFaceCam
+- file: harix/robot-skill-api/robot-tts-api.proto
+  package: robotSkillApi
+  syntax: proto3
+  messages: 3
+  services:
+  - name: RobotTtsService
+    rpcs:
+    - Speak
+    - SendQa
+- file: harix/robot-skill-api/robot-operator-api.proto
+  package: robotSkillApi
+  syntax: proto3
+  messages: 5
+  services:
+  - name: RobotOperatorService
+    rpcs:
+    - SwitchHi
+    - UpdateConfidenceIndex
+    - UpdateChichat
+    - SendFR
+- file: harix/robot-mind/robotmind.proto
+  package: robotmind
+  syntax: proto3
+  messages: 1
+  services:
+  - name: RobotMindService
+    rpcs:
+    - RegisterSkill
+    - SendUnknownAction
+    - SendAction
+- file: harix/robot-mind/robotskill.proto
+  package: robotmind
+  syntax: proto3
+  messages: 4
+  services:
+  - name: RobotSkillService
+    rpcs:
+    - EnableSkill
+    - HandleAction
+- file: harix/nlu/nlu.proto
+  package: skill.nlu
+  syntax: proto3
+  messages: 4
+  services:
+  - name: NLU
+    rpcs:
+    - Detect
+- file: harix/speech/speech.proto
+  package: skill.asr
+  syntax: proto3
+  messages: 3
+  services:
+  - name: Speech
+    rpcs:
+    - Recognize
+    - StreamingRecognize  # bidirectional streaming
+- file: harix/speech/enableSpeech.proto
+  package: skill.asr
+  syntax: proto3
+  messages: 2
+  services:
+  - name: EnableSpeech
+    rpcs:
+    - enable
+- file: harix/vision/vision.proto
+  package: skill.vision
+  syntax: proto3
+  messages: 16
+  services:
+  - name: Vision
+    rpcs:
+    - Recognize
+    - StreamingRecognize  # client streaming
+    - DetectOcr
+    - DetectMoney
+    - DetectCarPlate
+    - DetectObject
+    - DetectFace
+    - DetectFaceAttr
+    - DetectCaption
+    - DetectClassify
+    - DetectFall
+    - DetectCompare
+    - DetectVending
+- file: harix/vision/enableVision.proto
+  package: skill.vision
+  syntax: proto3
+  messages: 2
+  services:
+  - name: EnableVision
+    rpcs:
+    - enable
+- file: harix/serviceapp/recognizeSpeech.proto
+  package: serviceapp
+  syntax: proto3
+  messages: 2
+  services:
+  - name: Speech
+    rpcs:
+    - OnRecognizeResult
+- file: harix/serviceapp/recognizeVision.proto
+  package: serviceapp
+  syntax: proto3
+  messages: 4
+  services:
+  - name: Vision
+    rpcs:
+    - BeforeRecognize
+    - CompleteRecognize
+    - OcrEvent
+    - MoneyEvent
+    - CarPlateEvent
+    - ObjectEvent
+    - FaceEvent
+    - FaceAttrEvent
+    - CaptionEvent
+    - ClassifyEvent
+    - FallEvent
+    - CompareEvent
+    - VendingEvent

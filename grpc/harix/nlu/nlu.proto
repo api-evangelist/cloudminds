@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package skill.nlu;
+
+import "common/common.proto";
+import "common/qa.proto";
+import "google/protobuf/struct.proto";
+
+option java_package = "com.cloudminds.harix.skill.nlu";
+option java_outer_classname = "NLUProto";
+
+message Push {
+  message Param {
+    string url = 1;
+    int32 timeSpan = 2;
+  }
+  string action = 1;
+  skill.nlu.Push.Param param = 2;
+}
+
+message TextRequest {
+  message Body {
+    message Extra {
+      skill.nlu.TextRequest.Body.TalkType talk_type = 1;
+      skill.nlu.TextRequest.Body.FaceInfo face_info = 2;
+    }
+    message FaceInfo {
+      string name = 1;
+    }
+    enum TalkType {
+      NORMAL = 0;
+      FIRST_CONNECT = 1;
+      WELCOME = 2;
+      KEEP_WELCOME = 3;
+      LEAVE_WELCOME = 4;
+    }
+    string text = 1;
+    string lang = 2;
+    float latitude = 3;
+    float longitude = 4;
+    skill.nlu.TextRequest.Body.Extra extra = 5;
+  }
+  common.CommonReqInfo common_req_info = 1;
+  skill.nlu.TextRequest.Body body = 2;
+}
+
+message TextResponse {
+  enum NLUType {
+    Dialogflow = 0;
+    SmartVoice = 1;
+  }
+  common.CommonRspInfo common_resp_info = 1;
+  skill.nlu.DetectResponse body = 2;
+  skill.nlu.TextResponse.NLUType source = 3;
+  google.protobuf.Struct detail_message = 4;
+}
+
+message DetectResponse {
+  message Asr {
+    string text = 1;
+    string lang = 2;
+  }
+  message Operation {
+    string name = 1;
+    map<string, string> params = 2;
+  }
+  string source = 1;
+  skill.nlu.DetectResponse.Asr asr = 2;
+  skill.nlu.Push push = 3;
+  skill.nlu.DetectResponse.Operation operation = 4;
+  string iscredible = 5;
+  float confidence = 6;
+  repeated common.SwMessage.SwQaData.Answer.Tts tts = 7;
+  repeated string tags = 8;
+  repeated string recomendation = 9;
+  repeated string similars = 10;
+  common.SwMessage.SwQaData.DialogTree tree = 11;
+  int32 expiration = 12;
+}
+
+service NLU {
+  rpc Detect (skill.nlu.TextRequest) returns (skill.nlu.TextResponse) {}
+}

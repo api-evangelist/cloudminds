@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package robotSkillApi;
+
+import "google/protobuf/struct.proto";
+import "common/common.proto";
+import "common/qa.proto";
+
+option go_package = "cloudminds.com/harix/harix-skill-robot/proto/robot-skill-api";
+
+message SpeakRequest {
+  common.CommonReqInfo common_req_info = 1;
+  repeated robotSkillApi.Tts tts = 2;
+}
+
+message Tts {
+  message TtsAction {
+    string name = 1;
+    map<string, google.protobuf.Value> param = 2;
+  }
+  string text = 1;
+  string lang = 2;
+  robotSkillApi.Tts.TtsAction action = 3;
+}
+
+message SpeakResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  string result = 2;
+}
+
+service RobotTtsService {
+  rpc Speak (robotSkillApi.SpeakRequest) returns (robotSkillApi.SpeakResponse) {}
+  rpc SendQa (common.SwMessage) returns (robotSkillApi.SpeakResponse) {}
+}

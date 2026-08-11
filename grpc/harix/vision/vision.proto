@@ -1,0 +1,276 @@
+syntax = "proto3";
+
+package skill.vision;
+
+import "common/common.proto";
+import "google/protobuf/struct.proto";
+
+option java_package = "com.cloudminds.harix.skill.vision";
+option java_outer_classname = "VisionProto";
+
+enum RecognizeType {
+  OCR = 0;
+  MONEY = 1;
+  CAR_PLATE = 2;
+  OBJECT = 3;
+  FACE = 4;
+  FACE_ATTR = 5;
+  CAPTION = 6;
+  CLASSIFY = 7;
+  FALL = 8;
+  COMPARE = 9;
+  VENDING = 10;
+}
+
+enum PersonStatus {
+  COME = 0;
+  KEEP = 1;
+  LEAVE = 2;
+}
+
+message ImageRequest {
+  message Body {
+    skill.vision.RecognizeType type = 1;
+    bool image_from_net = 2;
+    bytes image = 3;
+    int32 flag = 4;
+    skill.vision.PersonStatus status = 5;
+    map<string, string> option = 6;
+    skill.vision.ImageRequest.RecognizeOption recognize_option = 7;
+    repeated bytes images = 8;
+  }
+  enum RecognizeOption {
+    NEVER = 0;
+    ALWAYS = 1;
+    ASK = 2;
+  }
+  common.CommonReqInfo common_req_info = 1;
+  skill.vision.ImageRequest.Body body = 2;
+  common.Extra extra = 3;
+}
+
+message ImageResponse {
+  message Ocr {
+    string text = 1;
+  }
+  message Money {
+    message MoneyInfo {
+      string class = 1;
+      string class_en = 2;
+      float confidence = 3;
+      string sample_image = 4;
+    }
+    map<string, skill.vision.ImageResponse.Money.MoneyInfo> result = 1;
+  }
+  message CarPlate {
+    string plate = 1;
+  }
+  message Object {
+    message Result {
+      message Label {
+        repeated int32 color = 1;
+        string name = 2;
+        string name_en = 3;
+      }
+      message Location {
+        repeated int32 bbox = 1;
+        repeated int32 color = 2;
+        string name = 3;
+        string name_en = 4;
+      }
+      repeated skill.vision.ImageResponse.Object.Result.Label labels = 2;
+      repeated skill.vision.ImageResponse.Object.Result.Location location = 3;
+    }
+    skill.vision.ImageResponse.Object.Result result = 1;
+    string tag = 2;
+  }
+  message Face {
+    message FaceObject {
+      message Rect {
+        int32 x = 1;
+        int32 y = 2;
+        int32 width = 3;
+        int32 height = 4;
+      }
+      string name = 1;
+      skill.vision.ImageResponse.Face.FaceObject.Rect rect = 2;
+      float similarity = 3;
+    }
+    int32 face_num = 1;
+    repeated skill.vision.ImageResponse.Face.FaceObject faces = 2;
+  }
+  message FaceAttr {
+    message Attribute {
+      float age = 1;
+      string emotion = 2;
+      string gender = 3;
+      skill.vision.ImageResponse.Face.FaceObject.Rect rect = 4;
+    }
+    repeated skill.vision.ImageResponse.FaceAttr.Attribute result = 1;
+  }
+  message Caption {
+    string caption = 1;
+    string caption_en = 2;
+  }
+  message Classify {
+  }
+  message Fall {
+    message Result {
+      float confidence = 1;
+      string status = 2;
+    }
+    skill.vision.ImageResponse.Fall.Result result = 1;
+  }
+  message Compare {
+    message Rect {
+      int32 x = 1;
+      int32 y = 2;
+      int32 width = 3;
+      int32 height = 4;
+    }
+    skill.vision.ImageResponse.Compare.Rect imagefiel1 = 1;
+    skill.vision.ImageResponse.Compare.Rect imagefiel2 = 2;
+    float similarity = 3;
+  }
+  message Vending {
+    message Result {
+      message Position {
+        string goodsid = 1;
+        string goodsname = 2;
+        int32 pointbottom = 3;
+        int32 pointleft = 4;
+        int32 pointright = 5;
+        int32 pointtop = 6;
+        float predict = 7;
+      }
+      map<string, int32> goods = 1;
+      string image = 2;
+      repeated skill.vision.ImageResponse.Vending.Result.Position position = 3;
+    }
+    skill.vision.ImageResponse.Vending.Result imagefile1 = 1;
+    skill.vision.ImageResponse.Vending.Result imagefile2 = 2;
+    skill.vision.ImageResponse.Vending.Result imagefile3 = 3;
+    skill.vision.ImageResponse.Vending.Result imagefile4 = 4;
+  }
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  string nothing = 10;
+  skill.vision.ImageResponse.Ocr ocr = 11;
+  skill.vision.ImageResponse.Money money = 12;
+  skill.vision.ImageResponse.CarPlate car_plate = 13;
+  skill.vision.ImageResponse.Object object = 14;
+  skill.vision.ImageResponse.Face face = 15;
+  skill.vision.ImageResponse.FaceAttr face_attr = 16;
+  skill.vision.ImageResponse.Caption caption = 17;
+  skill.vision.ImageResponse.Classify classify = 18;
+  skill.vision.ImageResponse.Fall fall = 19;
+  skill.vision.ImageResponse.Compare compare = 20;
+  skill.vision.ImageResponse.Vending vending = 21;
+}
+
+message FaceImage {
+  common.CommonReqInfo common_req_info = 1;
+  bool image_from_net = 2;
+  string faceset_id = 3;
+  bytes image = 4;
+  int32 flag = 5;
+  map<string, string> option = 6;
+}
+
+message SingleImage {
+  common.CommonReqInfo common_req_info = 1;
+  bool image_from_net = 2;
+  bytes image = 3;
+  int32 flag = 4;
+  map<string, string> option = 6;
+}
+
+message MultiImage {
+  common.CommonReqInfo common_req_info = 1;
+  bool image_from_net = 2;
+  repeated bytes image = 3;
+  int32 flag = 4;
+  map<string, string> option = 6;
+}
+
+message OcrResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.Ocr body = 3;
+}
+
+message MoneyResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.Money body = 3;
+}
+
+message CarPlateResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.CarPlate body = 3;
+}
+
+message ObjectResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.Object body = 3;
+}
+
+message FaceResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.Face body = 3;
+}
+
+message FaceAttrResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.FaceAttr body = 3;
+}
+
+message CaptionResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.Caption body = 3;
+}
+
+message ClassifyResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.Classify body = 3;
+}
+
+message FallResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.Fall body = 3;
+}
+
+message CompareResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.Compare body = 3;
+}
+
+message VendingResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  google.protobuf.Struct detail_message = 2;
+  skill.vision.ImageResponse.Vending body = 3;
+}
+
+service Vision {
+  rpc Recognize (skill.vision.ImageRequest) returns (skill.vision.ImageResponse) {}
+  rpc StreamingRecognize (stream skill.vision.ImageRequest) returns (skill.vision.ImageResponse) {}
+  rpc DetectOcr (skill.vision.SingleImage) returns (skill.vision.OcrResponse) {}
+  rpc DetectMoney (skill.vision.SingleImage) returns (skill.vision.MoneyResponse) {}
+  rpc DetectCarPlate (skill.vision.SingleImage) returns (skill.vision.CarPlateResponse) {}
+  rpc DetectObject (skill.vision.SingleImage) returns (skill.vision.ObjectResponse) {}
+  rpc DetectFace (skill.vision.FaceImage) returns (skill.vision.FaceResponse) {}
+  rpc DetectFaceAttr (skill.vision.SingleImage) returns (skill.vision.FaceAttrResponse) {}
+  rpc DetectCaption (skill.vision.SingleImage) returns (skill.vision.CaptionResponse) {}
+  rpc DetectClassify (skill.vision.SingleImage) returns (skill.vision.ClassifyResponse) {}
+  rpc DetectFall (skill.vision.SingleImage) returns (skill.vision.FallResponse) {}
+  rpc DetectCompare (skill.vision.MultiImage) returns (skill.vision.CompareResponse) {}
+  rpc DetectVending (skill.vision.MultiImage) returns (skill.vision.VendingResponse) {}
+}

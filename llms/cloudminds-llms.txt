@@ -1,0 +1,60 @@
+# CloudMinds / Dataa Robotics
+
+> Cloud-robotics company founded 2015 (Beijing + formerly Santa Clara/Irvine), backed by SoftBank and
+> Foxconn, now operating as Dataa Robotics (达闼机器人). Builds cloud-connected service robots and the
+> HARIX cloud AI robot brain. There is no public REST API and no OpenAPI. The machine-readable contract
+> is gRPC/protobuf3 — 14 services and 88 RPCs covering robot control, navigation, configuration,
+> text-to-speech, skill dispatch, speech recognition, vision recognition and NLU — shipped as compiled
+> descriptors inside the first-party "harix" Python SDK on PyPI. That SDK's last release was 2020-02-17,
+> and the HARIX RDK developer portal does not answer from outside China.
+
+## Contract
+
+- [HARIX gRPC service index](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/cloudminds-grpc-index.yml): All 18 protobuf files, 14 services, 88 RPCs, grouped by capability.
+- [RobotControlService](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/robot-skill-api/robot-control-api.proto): Move, Rotate, Stop, EmergencyStop, SetPosition, DoAction, DoIntent, RebootRobot, ShutdownRobot, WakeupRobot, RebootRcu, ShutdownRcu, RestartApp, LockRcuScreen, LightRcuScreen, ResetRobot, ReconnectRobot, GetRobotActions, SendData, StartScreenShot.
+- [RobotNavigateService](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/robot-skill-api/robot-navigate-api.proto): MoveTo, MoveByPath, RunProgram, StartPatrol/PausePatrol/ResumePatrol/StopPatrol, GetRobotMapList, GetMapLocation, GetPatrolRoute, DeleteRobotMap, setActiveMap, NotifyMapUpdated, SetRobotLocation, QueryRobotLocation, SetDefaultChargingSite, AttachChargingPile, DetachChargingPile, EnableCalibrationPoints.
+- [RobotConfigService](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/robot-skill-api/robot-config-api.proto): ConfigRobot, GetRobotState, ConfigRecordMedia, ConfigAsr, ConfigFr, ConfigFaceCam.
+- [RobotTtsService](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/robot-skill-api/robot-tts-api.proto): Speak, SendQa.
+- [RobotOperatorService](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/robot-skill-api/robot-operator-api.proto): SwitchHi, UpdateConfidenceIndex, UpdateChichat, SendFR.
+- [Vision](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/vision/vision.proto): Recognize, StreamingRecognize, DetectOcr, DetectMoney, DetectCarPlate, DetectObject, DetectFace, DetectFaceAttr, DetectCaption, DetectClassify, DetectFall, DetectCompare, DetectVending.
+- [Speech](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/speech/speech.proto): Recognize, StreamingRecognize (bidirectional).
+- [NLU](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/nlu/nlu.proto): Detect.
+- [RobotMindService](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/robot-mind/robotmind.proto): RegisterSkill, SendAction, SendUnknownAction.
+- [Common envelopes](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/grpc/harix/common/common.proto): CommonReqInfo (guid, root_guid, seq, timestamp, version, tenant_id, user_id, robot_id, robot_type, service_code) and CommonRspInfo (err_code, err_msg, err_detail).
+
+## Artifacts
+
+- [Conventions](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/conventions/cloudminds-conventions.yml): Request/response envelopes, tracing ids, streaming, and the absence of idempotency and pagination.
+- [Authentication](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/authentication/cloudminds-authentication.yml): No credential scheme on the wire; identity asserted as plain strings; plaintext gRPC channels.
+- [Event catalog](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/asyncapi/cloudminds-harix-events.yml): 17 push/callback channels HARIX calls back into a registered skill application.
+- [Data model](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/data-model/cloudminds-data-model.yml): 178 protobuf entities and 204 relationships.
+- [Conformance](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/conformance/cloudminds-conformance.yml): What the contract does and does not implement.
+- [Lifecycle](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/lifecycle/cloudminds-lifecycle.yml): Versioning, and the decay signals on this developer surface.
+- [Packages](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/packages/cloudminds-packages.yml): The harix Python SDK and the RDK repository.
+- [Domain security](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/security/cloudminds-domain-security.yml): TLS, HSTS, SPF, DMARC, DNSSEC, CAA on the live domain.
+- [Well-known probe](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/well-known/cloudminds-well-known.yml): 17 discovery paths across 4 hosts, zero documents found.
+- [Plans](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/plans/cloudminds-plans-pricing.yml) and [rate limits](https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/rate-limits/cloudminds-rate-limits.yml): Both honest zeros — contact-sales only, no published limits.
+
+## Company
+
+- [Dataa Robotics (English)](https://www.dataarobotics.com/en): Live corporate site.
+- [HARIX RDK Developer Portal](https://harix.dataarobotics.com/#/index/community/home): Linked as "DEVELOPERS" from the homepage; did not complete a TCP connection when probed 2026-08-10.
+- [HARIX OS](https://www.dataarobotics.com/en/product-70.html): The product page that names the RDK.
+- [News](https://www.dataarobotics.com/en/blog/index): Company news.
+- [HarixRDK on GitHub](https://github.com/HarixRDK): One repository, coffeehouse (RDK sample, last pushed 2021-09-03).
+- [CloudmindsRobot on GitHub](https://github.com/CloudmindsRobot): Seven infrastructure repositories (Loki, Superset, Jaeger operators), not API artifacts.
+- [harix on PyPI](https://pypi.org/project/harix/): Harix Skill Robot SDK, version 1.0.9, published 2020-02-17.
+
+## Notes for agents
+
+- There is no callable public endpoint. The SDK takes the gRPC target as a caller-supplied parameter; CloudMinds documents no default host, so integration requires a deployment-specific address obtained from the vendor.
+- Channels are plaintext. The first-party SDK never configures TLS credentials.
+- No idempotency key exists. Mutating RPCs — including Move, EmergencyStop, RebootRobot and ShutdownRobot — are physical-consequence operations that are not safe to retry blindly.
+- Errors return inside a successful response as common.CommonRspInfo.err_code. No public registry of those codes exists, so error handling cannot be written against a known vocabulary.
+- The legacy domain cloudminds.com does not answer. Anything citing it as a live surface is stale.
+- CloudMinds Technology Inc. and affiliates were added to the U.S. BIS Entity List in May 2020.
+
+---
+generated: 2026-08-10
+method: generated
+source: apis.yml + repo artifacts; /llms.txt returned 404 on https://www.dataarobotics.com

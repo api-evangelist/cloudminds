@@ -1,0 +1,260 @@
+syntax = "proto3";
+
+package common;
+
+import "common/common.proto";
+
+option java_package = "com.cloudminds.harix.common";
+option go_package = "cloudminds.com/harix/service-ginger-5g/protos/common";
+
+message RCULogin {
+  string rcu_id = 1;
+  string lang = 2;
+  string region = 3;
+  int32 privacy_enhance = 4;
+  int32 hi_status = 5;
+  bool rcu_first_connection = 6;
+  uint64 rcu_first_connection_date = 7;
+  string group_id = 8;
+}
+
+message RCULogout {
+}
+
+message HiStatus {
+  int32 hi_status = 1;
+}
+
+message AutoSwitch {
+  int32 confidence_index = 1;
+  string reason = 2;
+}
+
+message AiStatus {
+  int32 confidence_index = 1;
+}
+
+message RtspCreating {
+  uint64 id = 1;
+  string name = 2;
+  bool audio = 3;
+  bool video = 4;
+  string rtsp_user = 5;
+  string rtsp_pwd = 6;
+  string url = 7;
+}
+
+message RtspSource {
+  uint64 id = 1;
+  string name = 2;
+}
+
+message StartRtspRecorderReq {
+  repeated common.RtspCreating rtsps_creating = 1;
+}
+
+message StartRtspRecorderResp {
+  int32 code = 1;
+  string msg = 2;
+  string mg_uri = 3;
+  repeated common.RtspSource rtsps_source = 4;
+}
+
+message StopRtspRecorderReq {
+  repeated common.RtspSource rtsps_source = 1;
+}
+
+message CommonJsonReq {
+  string data = 1;
+}
+
+message CommonJsonResp {
+  int32 code = 1;
+  string msg = 2;
+  string data = 3;
+}
+
+message CommonJsonMsg {
+  common.CommonReqInfo common_req_info = 1;
+  string type = 2;
+  common.CommonJsonReq body = 3;
+}
+
+message RobotStatusRequest {
+  common.CommonReqInfo common_req_info = 1;
+  common.RobotStatusBody body = 2;
+}
+
+message RobotStatusBody {
+  string language = 1;
+  int32 asr_status = 2;
+  int32 robot_status = 3;
+  repeated string location = 4;
+  double orientation = 5;
+  common.RCUStatus rcu = 6;
+  common.RobotStatus robot = 7;
+  string operating_status = 8;
+  common.WhistleWarning whistle_warning = 9;
+  string alarm = 10;
+  string net_state = 11;
+  int32 indoor_pos_state = 12;
+  common.RCUConfig config = 13;
+  common.PepperAction pepperActions = 14;
+  common.Navigate navigate = 15;
+}
+
+message RCUStatus {
+  common.Battery battery = 1;
+}
+
+message Battery {
+  int32 charging_status = 1;
+  double percent = 2;
+  double temperature = 3;
+  double voltage = 4;
+}
+
+message RobotStatus {
+  common.Battery battery = 1;
+}
+
+message WhistleWarning {
+  bool state = 1;
+}
+
+message RCUConfig {
+  message RcuCamera {
+    double video_Start_Bps = 1;
+    double video_bps = 2;
+    double audio_start_bps = 3;
+    string video_codec = 4;
+    string audio_codec = 5;
+    double video_fps = 6;
+    double video_width = 7;
+    double video_height = 8;
+    double ms_max_bps = 9;
+    double ms_min_bps = 10;
+    double rcu_camera_status = 11;
+  }
+  message Camera {
+    message CameraURL {
+      string high = 1;
+      string medium = 2;
+      string low = 3;
+    }
+    int32 index = 1;
+    string label = 2;
+    string access_url = 3;
+    common.RCUConfig.Camera.CameraURL url = 4;
+    string camera_status = 5;
+  }
+  message CameraConnectionState {
+    string top = 1;
+  }
+  message TopCamera {
+    int32 index = 1;
+    bool face_preprocess = 2;
+    double video_fps = 3;
+    bool web_cam_status = 4;
+  }
+  message FaceDetection {
+    string camera = 1;
+    string operation_status = 2;
+  }
+  message TTS {
+    string type = 1;
+    string language = 2;
+    string volume = 3;
+    string speed = 4;
+  }
+  message ASR {
+    string language = 1;
+  }
+  message Navigate {
+    message BaseLocation {
+      double x = 1;
+      double y = 2;
+    }
+    common.RCUConfig.Navigate.BaseLocation base_location = 1;
+    bool enable_calibration_points = 2;
+  }
+  message Network {
+    int32 quality = 1;
+    string access_type = 2;
+  }
+  message Navi {
+    int32 speed = 1;
+    int32 target_speed = 2;
+    string warning_light = 3;
+    string patrolling_state = 4;
+    string patrolling_map_name = 5;
+    string patrolling_route_name = 6;
+  }
+  message App {
+    int32 home_u_i_mode = 1;
+  }
+  common.RCUConfig.RcuCamera rcu_camera = 1;
+  repeated common.RCUConfig.Camera cameras = 2;
+  common.RCUConfig.CameraConnectionState camera_connection_state = 3;
+  common.RCUConfig.TopCamera top_camera = 4;
+  common.RCUConfig.FaceDetection face_detection = 5;
+  common.RCUConfig.TTS tts = 6;
+  common.RCUConfig.ASR asr = 7;
+  common.RCUConfig.Navigate navigate = 8;
+  string operation_mode = 9;
+  string hi_motion_control = 10;
+  string screen_status = 11;
+  common.RCUConfig.Network network = 12;
+  common.RCUConfig.Navi navi = 13;
+  common.RCUConfig.App app = 14;
+}
+
+message ActionInfo {
+  string text = 1;
+  string action = 2;
+}
+
+message PepperAction {
+  repeated common.ActionInfo dances = 1;
+  repeated common.ActionInfo actions = 2;
+}
+
+message NavigateEvent {
+  string id = 1;
+  int32 level = 2;
+  int64 timestamp = 3;
+  string module = 4;
+  int32 status = 5;
+  string content = 6;
+}
+
+message CalibrationPoint {
+  double x = 1;
+  double y = 2;
+}
+
+message Navigate {
+  common.NavigateEvent event = 1;
+  repeated common.CalibrationPoint calibrationPoints = 2;
+}
+
+message ClientRecordConfig {
+  bool recorder = 1;
+  bool grab = 2;
+  bool audio = 3;
+  bool video = 4;
+  string bandwidth = 5;
+}
+
+message ClientRecordStop {
+  bool rcu = 1;
+  bool rtsp = 2;
+}
+
+message DelGroup {
+  string group_id = 1;
+}
+
+message SwitchReconnect {
+  string group_id = 1;
+}

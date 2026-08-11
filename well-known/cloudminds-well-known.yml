@@ -1,0 +1,45 @@
+generated: '2026-08-10'
+method: probed
+source: live HTTP probes, 2026-08-10
+note: >-
+  Every /.well-known/ path missed on every host. This file records the absence — it is NOT evidence that
+  CloudMinds serves a discovery surface, and no `WellKnown`, `SecurityTxt`, `APICatalog` or `AgentCard`
+  pointer is emitted in apis.yml as a result. The 404 bodies on www.dataarobotics.com are a plain nginx
+  "404 Not Found" page (138 bytes), not an SPA catch-all, so these are true misses rather than soft-404s.
+hosts:
+- host: https://www.dataarobotics.com
+  reachable: true
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /openapi.json, status: 404}
+  - {path: /openapi.yaml, status: 404}
+  - {path: /swagger.json, status: 404}
+  - {path: /api-docs, status: 404}
+  - {path: /llms.txt, status: 404}
+  - {path: /robots.txt, status: 404}
+- host: https://harix.dataarobotics.com
+  reachable: false
+  failure: TCP connection timeout to 103.235.247.221:443 (DNS resolves; no SYN-ACK after 20s)
+  documents: []
+  note: This is the HARIX RDK developer portal the company links as "DEVELOPERS" from its own homepage.
+- host: https://cloudminds.com
+  reachable: false
+  failure: TCP connection timeout to 47.105.146.7:443 (DNS resolves; no SYN-ACK after 15s)
+  documents: []
+  note: The legacy corporate domain, and the homepage URL recorded in the harix SDK's own setup.py.
+- host: https://harix.cloudminds.com
+  reachable: false
+  failure: TCP connection timeout to 103.235.247.221:443
+  documents: []
+  note: The legacy developer portal this profile previously pointed at.
+summary:
+  hosts_probed: 4
+  hosts_reachable: 1
+  paths_probed: 17
+  documents_found: 0

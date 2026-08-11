@@ -1,0 +1,94 @@
+generated: '2026-08-10'
+method: derived
+source: grpc/harix/common/common.proto, grpc/harix/robot-mind/*.proto, harix 1.0.9 SDK client code
+note: >-
+  CloudMinds publishes no written API convention documentation that a member of the public can reach —
+  the HARIX RDK developer portal (harix.dataarobotics.com) does not answer from outside China. Everything
+  below is derived from the provider's own compiled protobuf descriptors in grpc/ and from the client
+  code of the first-party "harix" Python SDK 1.0.9, so it describes the contract as shipped rather than
+  as documented.
+transport:
+  protocol: gRPC
+  serialization: protobuf3
+  channel: >-
+    The SDK opens every stub with grpc.insecure_channel(grpc_url, options=[('grpc.default_authority',
+    authority)]). The channel is PLAINTEXT — no TLS credentials are configured anywhere in the SDK — and
+    the caller supplies both the target and the :authority header value, which is how a single gRPC
+    ingress routes to a specific tenant/robot backend.
+  streaming:
+    supported: true
+    rpcs:
+    - {rpc: skill.asr.Speech/StreamingRecognize, mode: bidirectional}
+    - {rpc: skill.vision.Vision/StreamingRecognize, mode: client-streaming}
+    note: Only these two RPCs stream; the other 86 are unary.
+request_envelope:
+  message: common.CommonReqInfo
+  file: grpc/harix/common/common.proto
+  embedded_in: 48 request messages
+  fields:
+  - {field: guid, type: string, role: per-call unique id, generated_by: client (uuid4 in the SDK)}
+  - {field: root_guid, type: string, role: correlation/trace root id, generated_by: client (uuid4 in the SDK)}
+  - {field: seq, type: string, role: caller-supplied sequence number}
+  - {field: timestamp, type: int64, role: epoch milliseconds, generated_by: client}
+  - {field: version, type: string, role: protocol version, default_in_sdk: '3.0'}
+  - {field: tenant_id, type: string, role: tenant addressing}
+  - {field: user_id, type: string, role: end-user addressing}
+  - {field: robot_id, type: string, role: target robot}
+  - {field: robot_type, type: string, role: robot model}
+  - {field: service_code, type: string, role: calling service identifier}
+response_envelope:
+  message: common.CommonRspInfo
+  file: grpc/harix/common/common.proto
+  used_by: 26 response messages
+  fields:
+  - {field: err_code, type: int32, role: numeric error code}
+  - {field: err_msg, type: string, role: short error message}
+  - {field: err_detail, type: string, role: detail/diagnostic string}
+  note: >-
+    This is the error envelope for the whole surface — CloudMinds does not use gRPC status codes as the
+    primary error signal, it returns a CommonRspInfo inside a successful response. No registry of
+    err_code values is published anywhere public, so an error catalog could not be built: the shape is
+    known, the vocabulary is not.
+extensibility:
+  message: common.Extra
+  fields: [extra_type, extra_body]
+  note: Free-form typed extension slot carried on recognition requests and results.
+idempotency:
+  supported: false
+  evidence: >-
+    No Idempotency-Key equivalent exists. guid and root_guid are freshly generated with uuid4 on every
+    call by the SDK's tools.convert_header(), so they are tracing identifiers, not replay keys, and no
+    RPC documents or implements dedupe-on-retry. Mutating RPCs including Move, Rotate, EmergencyStop,
+    RebootRobot and ShutdownRobot are therefore not safe to retry blindly. No `Idempotency` pointer is
+    emitted for this provider.
+pagination:
+  supported: false
+  evidence: >-
+    List-shaped RPCs (RobotNavigateService/GetRobotMapList, GetPatrolRoute, RobotControlService/
+    GetRobotActions) return whole repeated collections with no page size, cursor, token or offset field
+    in any request or response message.
+versioning:
+  wire: common.CommonReqInfo.version — a string the caller sets, '3.0' in the SDK default
+  package: No version segment in any protobuf package name (common, robotSkillApi, robotmind, skill.asr, skill.vision, skill.nlu, serviceapp)
+  sdk: semver on PyPI — 1.0.9 is the latest and last release (2020-02-17)
+  note: >-
+    Unversioned protobuf packages mean a breaking field change would land on the same package path.
+    Combined with an SDK that has not shipped since 2020, there is no observable version-migration
+    contract.
+request_tracing:
+  header: none — tracing ids ride in the message body, not gRPC metadata
+  fields: [guid, root_guid, seq]
+rate_limit_signaling:
+  supported: false
+  see: rate-limits/cloudminds-rate-limits.yml
+callbacks:
+  model: >-
+    Inverted — a skill application registers its OWN gRPC address (RegisterSkillRequest.skill_addr, or
+    EnableSkillRequest.sub_addr) and HARIX then calls back into services the skill app implements
+    (package serviceapp, plus robotmind.RobotSkillService). See asyncapi/cloudminds-harix-events.yml.
+cross_links:
+  authentication: authentication/cloudminds-authentication.yml
+  lifecycle: lifecycle/cloudminds-lifecycle.yml
+  rate_limits: rate-limits/cloudminds-rate-limits.yml
+  events: asyncapi/cloudminds-harix-events.yml
+  contract: grpc/cloudminds-grpc-index.yml

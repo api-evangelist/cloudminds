@@ -12,15 +12,19 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cloudminds.png
 name: CloudMinds
-description: 'CloudMinds (Dataa Robotics / 达闼科技) is a cloud-robotics company founded in 2015 with
-  dual headquarters in Beijing, China and Irvine, California, backed by SoftBank and Foxconn. It builds
-  cloud-connected smart machines and the HARIX ("Human Augmented Robot Intelligence with eXtreme reality")
-  cloud AI robot brain, operating cloud robots over its Mobile-intranet Cloud Services (MCS) and Virtual
-  Backbone Network (VBN). Its developer offering is the HARIX Robot Development Kit (RDK) — an app behavior
-  blueprint editor, motion/dance editor, scene-map tools, and a robot simulation/training platform —
-  distributed through the HARIX RDK portal, the HarixRDK GitHub organization, and the official "harix"
-  Python SDK on PyPI. CloudMinds does not publish a public REST API; it exposes flexible APIs and
-  middleware to integrate robots with legacy systems. Added to the U.S. BIS Entity List in May 2020.'
+description: 'CloudMinds — now operating as Dataa Robotics (达闼机器人股份有限公司) — is a cloud-robotics
+  company founded in 2015, originally with dual headquarters in Beijing, China and Santa Clara/Irvine,
+  California, and backed by SoftBank and Foxconn. It builds cloud-connected smart machines and the HARIX
+  ("Human Augmented Robot Intelligence with eXtreme reality") cloud AI robot brain, operating cloud robots
+  over its robot secure private network and a digital-twin simulation layer. Its developer offering is the
+  HARIX Robot Development Kit (RDK) — an app behavior blueprint editor, motion/dance editor, scene-map
+  tools, and a robot simulation/training platform — distributed through the HARIX RDK portal, the HarixRDK
+  GitHub organization, and the official "harix" Python SDK on PyPI. CloudMinds publishes no OpenAPI and no
+  public REST API; its machine-readable contract is gRPC/protobuf3 — 14 services and 88 RPCs across robot
+  control, navigation, configuration, TTS, skill dispatch, speech recognition, vision recognition and NLU —
+  shipped as compiled descriptors inside the first-party Python SDK. The US-facing cloudminds.com domain no
+  longer answers; the live corporate surface is dataarobotics.com. Added to the U.S. BIS Entity List in May
+  2020.'
 url: https://raw.githubusercontent.com/api-evangelist/cloudminds/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -30,7 +34,7 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-18'
+modified: '2026-08-10'
 tags:
 - Company
 - Frontier Tech
@@ -39,14 +43,77 @@ tags:
 - Artificial Intelligence
 - Robot Development Kit
 - HARIX
-apis: []
+- gRPC
+- Protobuf
+- Robot Operating System
+- Computer Vision
+- Speech Recognition
+apis:
+- aid: cloudminds:harix-robot-skill-api
+  name: HARIX Robot Skill API (gRPC)
+  description: 'The gRPC surface a HARIX skill application uses to drive a CloudMinds cloud robot and to
+    consume HARIX cloud AI. Five robotSkillApi services cover control (move/rotate/stop/emergency-stop,
+    RCU reboot/shutdown, intent + action dispatch), navigation (maps, locations, patrol routes, charging
+    pile attach/detach), configuration, text-to-speech and operator hand-off; robotmind covers skill
+    registration and action dispatch; skill.asr, skill.vision and skill.nlu cover speech recognition
+    (unary + bidirectional streaming), thirteen vision detectors and intent detection; and the serviceapp
+    package defines the callback services a skill app implements to receive recognition results and vision
+    events pushed back from HARIX. No base URL is published — the SDK takes the gRPC target as a caller
+    supplied parameter bound per robot deployment.'
+  humanURL: https://harix.dataarobotics.com/#/index/community/home
+  tags:
+  - Robotics
+  - gRPC
+  - Robot Control
+  - Navigation
+  - Computer Vision
+  - Speech Recognition
+  properties:
+  - type: Protobuf
+    url: grpc/cloudminds-grpc-index.yml
+    name: HARIX gRPC service index
+  - type: Protobuf
+    url: grpc/harix/robot-skill-api/robot-control-api.proto
+    name: RobotControlService
+  - type: Protobuf
+    url: grpc/harix/robot-skill-api/robot-navigate-api.proto
+    name: RobotNavigateService
+  - type: Protobuf
+    url: grpc/harix/vision/vision.proto
+    name: Vision recognition service
+  - type: Protobuf
+    url: grpc/harix/speech/speech.proto
+    name: Speech recognition service
+  - type: Webhooks
+    url: asyncapi/cloudminds-harix-events.yml
+    name: HARIX push/callback event catalog
+  - type: Conventions
+    url: conventions/cloudminds-conventions.yml
+    name: HARIX gRPC conventions
+  - type: Authentication
+    url: authentication/cloudminds-authentication.yml
+    name: HARIX authentication profile
+  - type: DataModel
+    url: data-model/cloudminds-data-model.yml
+    name: HARIX protobuf data model
+  x-base-url: null
+  x-base-url-note: >-
+    No base URL is published. The first-party SDK constructs every stub with
+    grpc.insecure_channel(grpc_url, options=[('grpc.default_authority', authority)]) where grpc_url and
+    authority are supplied by the integrator, so the endpoint is per-deployment and CloudMinds documents
+    no default host. Recorded as missing rather than guessed.
 common:
+- type: DomainSecurity
+  url: security/cloudminds-domain-security.yml
 - type: Website
-  url: https://cloudminds.com/en
-  name: CloudMinds (Dataa Robotics)
+  url: https://www.dataarobotics.com/en
+  name: Dataa Robotics (formerly CloudMinds)
 - type: DeveloperPortal
-  url: https://harix.cloudminds.com/
-  name: HARIX RDK Portal
+  url: https://harix.dataarobotics.com/#/index/community/home
+  name: HARIX RDK Developer Portal
+- type: Blog
+  url: https://www.dataarobotics.com/en/blog/index
+  name: Dataa Robotics News
 - type: GitHubOrganization
   url: https://github.com/HarixRDK
   name: HarixRDK
@@ -54,21 +121,59 @@ common:
   url: https://github.com/CloudmindsRobot
   name: Cloudminds Robot Inc
 - type: Support
-  url: mailto:robotsupport@cloudminds.com
+  url: mailto:robotsupport@dataarobotics.com
   name: Robot Support
+- type: PrivacyPolicy
+  url: https://www.dataarobotics.com/zh/Uploads/contact/%E8%BE%BE%E9%97%BC%E5%AE%98%E7%BD%91%E9%9A%90%E7%A7%81%E6%94%BF%E7%AD%96.pdf
+  name: 达闼官网隐私政策 (Privacy Policy, PDF, Chinese only)
 - type: Packages
   url: packages/cloudminds-packages.yml
   name: CloudMinds Packages
 - type: SDKs
   url: packages/cloudminds-packages.yml
   name: HARIX Skill Robot SDK (Python)
+- type: Protobuf
+  url: grpc/cloudminds-grpc-index.yml
+  name: HARIX gRPC / protobuf3 contract
+- type: Conventions
+  url: conventions/cloudminds-conventions.yml
+  name: HARIX gRPC conventions
+- type: Authentication
+  url: authentication/cloudminds-authentication.yml
+  name: HARIX authentication profile
+- type: DataModel
+  url: data-model/cloudminds-data-model.yml
+  name: HARIX protobuf data model
+- type: Conformance
+  url: conformance/cloudminds-conformance.yml
+  name: Standards conformance
+- type: Lifecycle
+  url: lifecycle/cloudminds-lifecycle.yml
+  name: Versioning and lifecycle
+- type: Webhooks
+  url: asyncapi/cloudminds-harix-events.yml
+  name: HARIX push/callback event catalog
+- type: Plans
+  url: plans/cloudminds-plans-pricing.yml
+  name: Plans and pricing
+- type: RateLimits
+  url: rate-limits/cloudminds-rate-limits.yml
+  name: Rate limits
+- type: LLMsTxt
+  url: llms/cloudminds-llms.txt
+  name: llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-10'
+  status: enriched
+  artifacts_added: 30
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence
+  note: >-
+    Contract discovery beat the dead docs host. No OpenAPI exists, but the first-party harix 1.0.9 PyPI
+    SDK carries compiled protobuf descriptors for the whole HARIX contract; decoded into grpc/ as 18
+    proto3 files, 14 services, 88 RPCs, 121 messages. Website corrected from the dead cloudminds.com to
+    the live dataarobotics.com.

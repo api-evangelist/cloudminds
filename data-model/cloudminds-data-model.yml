@@ -1,0 +1,873 @@
+generated: '2026-08-10'
+method: derived
+source: grpc/harix/**/*.proto
+note: >-
+  Entity-relationship graph derived mechanically from the protobuf message definitions in grpc/ (which
+  were themselves decoded from the compiled descriptors in the first-party "harix" PyPI SDK 1.0.9).
+  Entities are protobuf messages including nested messages; relationships are message-typed fields —
+  has_many for repeated fields, has_one for singular fields. Map entry synthetic messages and
+  google.protobuf.* well-known types are excluded. CloudMinds publishes no object reference, so
+  id-prefixes and domain descriptions could not be enriched from docs.
+summary:
+  entities: 178
+  relationships: 204
+  hubs:
+  - entity: common.CommonReqInfo
+    referenced_by: 48
+    role: request envelope embedded in nearly every request message (tenant/user/robot addressing + tracing ids)
+  - entity: common.CommonRspInfo
+    referenced_by: 26
+    role: response envelope carrying err_code / err_msg / err_detail
+  - entity: robotSkillApi.Point
+    referenced_by: 6
+    role: map coordinate used by navigation locations, paths and robot position
+entities:
+- entity: common.ActionInfo
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+- entity: common.AiStatus
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+- entity: common.Answer.Tts
+  file: grpc/harix/common/qa.proto
+  fields: 7
+  relationships:
+  - {kind: has_one, target: common.SwMessage.SwQaData.Answer.Tts.TtsAction, via: action}
+- entity: common.AutoSwitch
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+- entity: common.Battery
+  file: grpc/harix/common/sw-common.proto
+  fields: 4
+- entity: common.CalibrationPoint
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+- entity: common.Camera.CameraURL
+  file: grpc/harix/common/sw-common.proto
+  fields: 3
+- entity: common.ClientRecordConfig
+  file: grpc/harix/common/sw-common.proto
+  fields: 5
+- entity: common.ClientRecordStop
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+- entity: common.CommonJsonMsg
+  file: grpc/harix/common/sw-common.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: common.CommonJsonReq, via: body}
+- entity: common.CommonJsonReq
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+- entity: common.CommonJsonResp
+  file: grpc/harix/common/sw-common.proto
+  fields: 3
+- entity: common.CommonReqInfo
+  file: grpc/harix/common/common.proto
+  fields: 10
+- entity: common.CommonRspInfo
+  file: grpc/harix/common/common.proto
+  fields: 3
+- entity: common.DelGroup
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+- entity: common.DialogTree.DialogTreeState
+  file: grpc/harix/common/qa.proto
+  fields: 2
+- entity: common.Extra
+  file: grpc/harix/common/common.proto
+  fields: 2
+- entity: common.HaContext.HaQaHistoryItem
+  file: grpc/harix/common/qa.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.SwMessage.SwQaData.Question, via: question}
+  - {kind: has_many, target: common.SwMessage.SwQaData.Answer, via: answer}
+- entity: common.HiStatus
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+- entity: common.Navigate
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.NavigateEvent, via: event}
+  - {kind: has_many, target: common.CalibrationPoint, via: calibrationPoints}
+- entity: common.Navigate.BaseLocation
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+- entity: common.NavigateEvent
+  file: grpc/harix/common/sw-common.proto
+  fields: 6
+- entity: common.PepperAction
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+  relationships:
+  - {kind: has_many, target: common.ActionInfo, via: dances}
+  - {kind: has_many, target: common.ActionInfo, via: actions}
+- entity: common.RCUConfig
+  file: grpc/harix/common/sw-common.proto
+  fields: 14
+  relationships:
+  - {kind: has_one, target: common.RCUConfig.RcuCamera, via: rcu_camera}
+  - {kind: has_many, target: common.RCUConfig.Camera, via: cameras}
+  - {kind: has_one, target: common.RCUConfig.CameraConnectionState, via: camera_connection_state}
+  - {kind: has_one, target: common.RCUConfig.TopCamera, via: top_camera}
+  - {kind: has_one, target: common.RCUConfig.FaceDetection, via: face_detection}
+  - {kind: has_one, target: common.RCUConfig.TTS, via: tts}
+  - {kind: has_one, target: common.RCUConfig.ASR, via: asr}
+  - {kind: has_one, target: common.RCUConfig.Navigate, via: navigate}
+  - {kind: has_one, target: common.RCUConfig.Network, via: network}
+  - {kind: has_one, target: common.RCUConfig.Navi, via: navi}
+  - {kind: has_one, target: common.RCUConfig.App, via: app}
+- entity: common.RCUConfig.ASR
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+- entity: common.RCUConfig.App
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+- entity: common.RCUConfig.Camera
+  file: grpc/harix/common/sw-common.proto
+  fields: 5
+  relationships:
+  - {kind: has_one, target: common.RCUConfig.Camera.CameraURL, via: url}
+- entity: common.RCUConfig.CameraConnectionState
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+- entity: common.RCUConfig.FaceDetection
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+- entity: common.RCUConfig.Navi
+  file: grpc/harix/common/sw-common.proto
+  fields: 6
+- entity: common.RCUConfig.Navigate
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.RCUConfig.Navigate.BaseLocation, via: base_location}
+- entity: common.RCUConfig.Network
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+- entity: common.RCUConfig.RcuCamera
+  file: grpc/harix/common/sw-common.proto
+  fields: 11
+- entity: common.RCUConfig.TTS
+  file: grpc/harix/common/sw-common.proto
+  fields: 4
+- entity: common.RCUConfig.TopCamera
+  file: grpc/harix/common/sw-common.proto
+  fields: 4
+- entity: common.RCULogin
+  file: grpc/harix/common/sw-common.proto
+  fields: 8
+- entity: common.RCULogout
+  file: grpc/harix/common/sw-common.proto
+  fields: 0
+- entity: common.RCUStatus
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+  relationships:
+  - {kind: has_one, target: common.Battery, via: battery}
+- entity: common.RobotStatus
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+  relationships:
+  - {kind: has_one, target: common.Battery, via: battery}
+- entity: common.RobotStatusBody
+  file: grpc/harix/common/sw-common.proto
+  fields: 15
+  relationships:
+  - {kind: has_one, target: common.RCUStatus, via: rcu}
+  - {kind: has_one, target: common.RobotStatus, via: robot}
+  - {kind: has_one, target: common.WhistleWarning, via: whistle_warning}
+  - {kind: has_one, target: common.RCUConfig, via: config}
+  - {kind: has_one, target: common.PepperAction, via: pepperActions}
+  - {kind: has_one, target: common.Navigate, via: navigate}
+- entity: common.RobotStatusRequest
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: common.RobotStatusBody, via: body}
+- entity: common.RtspCreating
+  file: grpc/harix/common/sw-common.proto
+  fields: 7
+- entity: common.RtspSource
+  file: grpc/harix/common/sw-common.proto
+  fields: 2
+- entity: common.StartRtspRecorderReq
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+  relationships:
+  - {kind: has_many, target: common.RtspCreating, via: rtsps_creating}
+- entity: common.StartRtspRecorderResp
+  file: grpc/harix/common/sw-common.proto
+  fields: 4
+  relationships:
+  - {kind: has_many, target: common.RtspSource, via: rtsps_source}
+- entity: common.StopRtspRecorderReq
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+  relationships:
+  - {kind: has_many, target: common.RtspSource, via: rtsps_source}
+- entity: common.SwMessage
+  file: grpc/harix/common/qa.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: common.SwMessage.SwQaData, via: data}
+- entity: common.SwMessage.SwQaData
+  file: grpc/harix/common/qa.proto
+  fields: 5
+  relationships:
+  - {kind: has_one, target: common.SwMessage.SwQaData.Question, via: question}
+  - {kind: has_many, target: common.SwMessage.SwQaData.Answer, via: answer}
+  - {kind: has_one, target: common.SwMessage.SwQaData.DialogTree, via: tree}
+  - {kind: has_one, target: common.SwMessage.SwQaData.HaContext, via: context}
+- entity: common.SwQaData.Answer
+  file: grpc/harix/common/qa.proto
+  fields: 5
+  relationships:
+  - {kind: has_many, target: common.SwMessage.SwQaData.Answer.Tts, via: tts}
+- entity: common.SwQaData.DialogTree
+  file: grpc/harix/common/qa.proto
+  fields: 2
+  relationships:
+  - {kind: has_many, target: common.SwMessage.SwQaData.DialogTree.DialogTreeState, via: subtree}
+- entity: common.SwQaData.HaContext
+  file: grpc/harix/common/qa.proto
+  fields: 1
+  relationships:
+  - {kind: has_many, target: common.SwMessage.SwQaData.HaContext.HaQaHistoryItem, via: history}
+- entity: common.SwQaData.Question
+  file: grpc/harix/common/qa.proto
+  fields: 6
+- entity: common.SwitchReconnect
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+- entity: common.Tts.TtsAction
+  file: grpc/harix/common/qa.proto
+  fields: 2
+- entity: common.WhistleWarning
+  file: grpc/harix/common/sw-common.proto
+  fields: 1
+- entity: robotSkillApi.ActionRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 5
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.Cache
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 2
+- entity: robotSkillApi.CameraConfig
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 5
+  relationships:
+  - {kind: has_one, target: robotSkillApi.ScreenShot, via: screenshot}
+  - {kind: has_one, target: robotSkillApi.ShortVideo, via: shortVideo}
+  - {kind: has_one, target: robotSkillApi.Cache, via: cache}
+- entity: robotSkillApi.ChargingSiteRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: robotSkillApi.Position, via: position}
+- entity: robotSkillApi.ChichatRequest
+  file: grpc/harix/robot-skill-api/robot-operator-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.ConfidenceRequest
+  file: grpc/harix/robot-skill-api/robot-operator-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.ConfigAsrRequest
+  file: grpc/harix/robot-skill-api/robot-config-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.ConfigFaceCamRequest
+  file: grpc/harix/robot-skill-api/robot-config-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.ConfigFrRequest
+  file: grpc/harix/robot-skill-api/robot-config-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.ConfigRecordMediaRequest
+  file: grpc/harix/robot-skill-api/robot-config-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: robotSkillApi.StartRecordConfig, via: start_param}
+  - {kind: has_one, target: robotSkillApi.StopRecordConfig, via: stop_param}
+- entity: robotSkillApi.ConfigRobotRequest
+  file: grpc/harix/robot-skill-api/robot-config-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.EmergencyStopRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.EnableCalibrationPointsRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.FaceRecognitionRequest
+  file: grpc/harix/robot-skill-api/robot-operator-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.GetPatrolRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 6
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.GetRobotStateRequest
+  file: grpc/harix/robot-skill-api/robot-config-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.IntentRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.Location
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: robotSkillApi.Point, via: point}
+- entity: robotSkillApi.MapModel
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 3
+- entity: robotSkillApi.MapRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 4
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.MoveByPathRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 6
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_many, target: robotSkillApi.Point, via: points}
+- entity: robotSkillApi.MoveRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: robotSkillApi.MapModel, via: map_model}
+  - {kind: has_one, target: robotSkillApi.VelocityModel, via: v_model}
+- entity: robotSkillApi.MoveToRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 6
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: robotSkillApi.Point, via: point}
+- entity: robotSkillApi.NavigateBaseResponse
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: robotSkillApi.OperatorBaseResponse
+  file: grpc/harix/robot-skill-api/robot-operator-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: robotSkillApi.PatrolRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 11
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_many, target: robotSkillApi.Point, via: points}
+- entity: robotSkillApi.Point
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 7
+- entity: robotSkillApi.Position
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 3
+- entity: robotSkillApi.PositionRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: robotSkillApi.RobotPosition, via: position}
+- entity: robotSkillApi.ProgramData
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 10
+  relationships:
+  - {kind: has_many, target: robotSkillApi.Point, via: points}
+- entity: robotSkillApi.ProgramRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: robotSkillApi.ProgramData, via: program_data}
+- entity: robotSkillApi.QueryRobotLocationRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 1
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.RecognizeRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.RobotConfigResponse
+  file: grpc/harix/robot-skill-api/robot-config-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: robotSkillApi.RobotPosition
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 3
+- entity: robotSkillApi.RobotRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 1
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.RobotResponse
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: robotSkillApi.RotateRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 5
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.ScreenShot
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 1
+- entity: robotSkillApi.SendDataRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.SetRobotLocationRequest
+  file: grpc/harix/robot-skill-api/robot-navigate-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: robotSkillApi.Point, via: point}
+- entity: robotSkillApi.ShortVideo
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 2
+- entity: robotSkillApi.SpeakRequest
+  file: grpc/harix/robot-skill-api/robot-tts-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_many, target: robotSkillApi.Tts, via: tts}
+- entity: robotSkillApi.SpeakResponse
+  file: grpc/harix/robot-skill-api/robot-tts-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: robotSkillApi.StartRecordConfig
+  file: grpc/harix/robot-skill-api/robot-config-api.proto
+  fields: 5
+- entity: robotSkillApi.StartScreenShotRequest
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_many, target: robotSkillApi.CameraConfig, via: camera_configs}
+- entity: robotSkillApi.StopRecordConfig
+  file: grpc/harix/robot-skill-api/robot-config-api.proto
+  fields: 2
+- entity: robotSkillApi.SwitchRequest
+  file: grpc/harix/robot-skill-api/robot-operator-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotSkillApi.Tts
+  file: grpc/harix/robot-skill-api/robot-tts-api.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: robotSkillApi.Tts.TtsAction, via: action}
+- entity: robotSkillApi.Tts.TtsAction
+  file: grpc/harix/robot-skill-api/robot-tts-api.proto
+  fields: 2
+- entity: robotSkillApi.VelocityModel
+  file: grpc/harix/robot-skill-api/robot-control-api.proto
+  fields: 3
+- entity: robotmind.ActionRequest
+  file: grpc/harix/robot-mind/robotskill.proto
+  fields: 4
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotmind.ActionResponse
+  file: grpc/harix/robot-mind/robotskill.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_resp_info}
+- entity: robotmind.EnableSkillRequest
+  file: grpc/harix/robot-mind/robotskill.proto
+  fields: 6
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: robotmind.EnableSkillResponse
+  file: grpc/harix/robot-mind/robotskill.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_resp_info}
+- entity: robotmind.RegisterSkillRequest
+  file: grpc/harix/robot-mind/robotmind.proto
+  fields: 4
+- entity: serviceapp.EventResponse
+  file: grpc/harix/serviceapp/recognizeVision.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: serviceapp.ImageInfo
+  file: grpc/harix/serviceapp/recognizeVision.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: serviceapp.ImageInfo.Body, via: body}
+- entity: serviceapp.ImageInfo.Body
+  file: grpc/harix/serviceapp/recognizeVision.proto
+  fields: 8
+  relationships:
+  - {kind: has_one, target: common.Extra, via: extra}
+- entity: serviceapp.RecognitionResponse
+  file: grpc/harix/serviceapp/recognizeSpeech.proto
+  fields: 1
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: serviceapp.RecognitionResult
+  file: grpc/harix/serviceapp/recognizeSpeech.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: serviceapp.RecognitionResult.Body, via: body}
+  - {kind: has_one, target: common.Extra, via: extra}
+- entity: serviceapp.RecognitionResult.Body
+  file: grpc/harix/serviceapp/recognizeSpeech.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: serviceapp.RecognitionResult.Question, via: question}
+- entity: serviceapp.RecognitionResult.Question
+  file: grpc/harix/serviceapp/recognizeSpeech.proto
+  fields: 5
+- entity: serviceapp.VisionRequest
+  file: grpc/harix/serviceapp/recognizeVision.proto
+  fields: 14
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: serviceapp.ImageInfo.Body, via: image_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Ocr, via: ocr}
+  - {kind: has_one, target: skill.vision.ImageResponse.Money, via: money}
+  - {kind: has_one, target: skill.vision.ImageResponse.CarPlate, via: car_plate}
+  - {kind: has_one, target: skill.vision.ImageResponse.Object, via: object}
+  - {kind: has_one, target: skill.vision.ImageResponse.Face, via: face}
+  - {kind: has_one, target: skill.vision.ImageResponse.FaceAttr, via: face_attr}
+  - {kind: has_one, target: skill.vision.ImageResponse.Caption, via: caption}
+  - {kind: has_one, target: skill.vision.ImageResponse.Classify, via: classify}
+  - {kind: has_one, target: skill.vision.ImageResponse.Fall, via: fall}
+  - {kind: has_one, target: skill.vision.ImageResponse.Compare, via: compare}
+  - {kind: has_one, target: skill.vision.ImageResponse.Vending, via: vending}
+- entity: serviceapp.VisionResponse
+  file: grpc/harix/serviceapp/recognizeVision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_resp_info}
+  - {kind: has_one, target: serviceapp.VisionResponse.Propose, via: propose}
+- entity: serviceapp.VisionResponse.Propose
+  file: grpc/harix/serviceapp/recognizeVision.proto
+  fields: 4
+- entity: skill.asr.Body
+  file: grpc/harix/speech/speech.proto
+  fields: 7
+  relationships:
+  - {kind: has_one, target: skill.asr.Body.Data, via: data}
+- entity: skill.asr.Body.Data
+  file: grpc/harix/speech/speech.proto
+  fields: 10
+- entity: skill.asr.EnableRequest
+  file: grpc/harix/speech/enableSpeech.proto
+  fields: 4
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: skill.asr.EnableResponse
+  file: grpc/harix/speech/enableSpeech.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: skill.asr.RecognitionRequest
+  file: grpc/harix/speech/speech.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: skill.asr.Body, via: body}
+  - {kind: has_one, target: common.Extra, via: extra}
+- entity: skill.asr.RecognitionResponse
+  file: grpc/harix/speech/speech.proto
+  fields: 4
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: skill.nlu.Body.Extra
+  file: grpc/harix/nlu/nlu.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: skill.nlu.TextRequest.Body.FaceInfo, via: face_info}
+- entity: skill.nlu.Body.FaceInfo
+  file: grpc/harix/nlu/nlu.proto
+  fields: 1
+- entity: skill.nlu.DetectResponse
+  file: grpc/harix/nlu/nlu.proto
+  fields: 12
+  relationships:
+  - {kind: has_one, target: skill.nlu.DetectResponse.Asr, via: asr}
+  - {kind: has_one, target: skill.nlu.Push, via: push}
+  - {kind: has_one, target: skill.nlu.DetectResponse.Operation, via: operation}
+  - {kind: has_many, target: common.SwMessage.SwQaData.Answer.Tts, via: tts}
+  - {kind: has_one, target: common.SwMessage.SwQaData.DialogTree, via: tree}
+- entity: skill.nlu.DetectResponse.Asr
+  file: grpc/harix/nlu/nlu.proto
+  fields: 2
+- entity: skill.nlu.DetectResponse.Operation
+  file: grpc/harix/nlu/nlu.proto
+  fields: 2
+- entity: skill.nlu.Push
+  file: grpc/harix/nlu/nlu.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: skill.nlu.Push.Param, via: param}
+- entity: skill.nlu.Push.Param
+  file: grpc/harix/nlu/nlu.proto
+  fields: 2
+- entity: skill.nlu.TextRequest
+  file: grpc/harix/nlu/nlu.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: skill.nlu.TextRequest.Body, via: body}
+- entity: skill.nlu.TextRequest.Body
+  file: grpc/harix/nlu/nlu.proto
+  fields: 5
+  relationships:
+  - {kind: has_one, target: skill.nlu.TextRequest.Body.Extra, via: extra}
+- entity: skill.nlu.TextResponse
+  file: grpc/harix/nlu/nlu.proto
+  fields: 4
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_resp_info}
+  - {kind: has_one, target: skill.nlu.DetectResponse, via: body}
+- entity: skill.vision.CaptionResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Caption, via: body}
+- entity: skill.vision.CarPlateResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.CarPlate, via: body}
+- entity: skill.vision.ClassifyResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Classify, via: body}
+- entity: skill.vision.Compare.Rect
+  file: grpc/harix/vision/vision.proto
+  fields: 4
+- entity: skill.vision.CompareResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Compare, via: body}
+- entity: skill.vision.EnableRequest
+  file: grpc/harix/vision/enableVision.proto
+  fields: 5
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: skill.vision.EnableResponse
+  file: grpc/harix/vision/enableVision.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+- entity: skill.vision.Face.FaceObject
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: skill.vision.ImageResponse.Face.FaceObject.Rect, via: rect}
+- entity: skill.vision.FaceAttr.Attribute
+  file: grpc/harix/vision/vision.proto
+  fields: 4
+  relationships:
+  - {kind: has_one, target: skill.vision.ImageResponse.Face.FaceObject.Rect, via: rect}
+- entity: skill.vision.FaceAttrResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.FaceAttr, via: body}
+- entity: skill.vision.FaceImage
+  file: grpc/harix/vision/vision.proto
+  fields: 6
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: skill.vision.FaceObject.Rect
+  file: grpc/harix/vision/vision.proto
+  fields: 4
+- entity: skill.vision.FaceResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Face, via: body}
+- entity: skill.vision.Fall.Result
+  file: grpc/harix/vision/vision.proto
+  fields: 2
+- entity: skill.vision.FallResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Fall, via: body}
+- entity: skill.vision.ImageRequest
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+  - {kind: has_one, target: skill.vision.ImageRequest.Body, via: body}
+  - {kind: has_one, target: common.Extra, via: extra}
+- entity: skill.vision.ImageRequest.Body
+  file: grpc/harix/vision/vision.proto
+  fields: 8
+- entity: skill.vision.ImageResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 14
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Ocr, via: ocr}
+  - {kind: has_one, target: skill.vision.ImageResponse.Money, via: money}
+  - {kind: has_one, target: skill.vision.ImageResponse.CarPlate, via: car_plate}
+  - {kind: has_one, target: skill.vision.ImageResponse.Object, via: object}
+  - {kind: has_one, target: skill.vision.ImageResponse.Face, via: face}
+  - {kind: has_one, target: skill.vision.ImageResponse.FaceAttr, via: face_attr}
+  - {kind: has_one, target: skill.vision.ImageResponse.Caption, via: caption}
+  - {kind: has_one, target: skill.vision.ImageResponse.Classify, via: classify}
+  - {kind: has_one, target: skill.vision.ImageResponse.Fall, via: fall}
+  - {kind: has_one, target: skill.vision.ImageResponse.Compare, via: compare}
+  - {kind: has_one, target: skill.vision.ImageResponse.Vending, via: vending}
+- entity: skill.vision.ImageResponse.Caption
+  file: grpc/harix/vision/vision.proto
+  fields: 2
+- entity: skill.vision.ImageResponse.CarPlate
+  file: grpc/harix/vision/vision.proto
+  fields: 1
+- entity: skill.vision.ImageResponse.Classify
+  file: grpc/harix/vision/vision.proto
+  fields: 0
+- entity: skill.vision.ImageResponse.Compare
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: skill.vision.ImageResponse.Compare.Rect, via: imagefiel1}
+  - {kind: has_one, target: skill.vision.ImageResponse.Compare.Rect, via: imagefiel2}
+- entity: skill.vision.ImageResponse.Face
+  file: grpc/harix/vision/vision.proto
+  fields: 2
+  relationships:
+  - {kind: has_many, target: skill.vision.ImageResponse.Face.FaceObject, via: faces}
+- entity: skill.vision.ImageResponse.FaceAttr
+  file: grpc/harix/vision/vision.proto
+  fields: 1
+  relationships:
+  - {kind: has_many, target: skill.vision.ImageResponse.FaceAttr.Attribute, via: result}
+- entity: skill.vision.ImageResponse.Fall
+  file: grpc/harix/vision/vision.proto
+  fields: 1
+  relationships:
+  - {kind: has_one, target: skill.vision.ImageResponse.Fall.Result, via: result}
+- entity: skill.vision.ImageResponse.Money
+  file: grpc/harix/vision/vision.proto
+  fields: 1
+- entity: skill.vision.ImageResponse.Object
+  file: grpc/harix/vision/vision.proto
+  fields: 2
+  relationships:
+  - {kind: has_one, target: skill.vision.ImageResponse.Object.Result, via: result}
+- entity: skill.vision.ImageResponse.Ocr
+  file: grpc/harix/vision/vision.proto
+  fields: 1
+- entity: skill.vision.ImageResponse.Vending
+  file: grpc/harix/vision/vision.proto
+  fields: 4
+  relationships:
+  - {kind: has_one, target: skill.vision.ImageResponse.Vending.Result, via: imagefile1}
+  - {kind: has_one, target: skill.vision.ImageResponse.Vending.Result, via: imagefile2}
+  - {kind: has_one, target: skill.vision.ImageResponse.Vending.Result, via: imagefile3}
+  - {kind: has_one, target: skill.vision.ImageResponse.Vending.Result, via: imagefile4}
+- entity: skill.vision.Money.MoneyInfo
+  file: grpc/harix/vision/vision.proto
+  fields: 4
+- entity: skill.vision.MoneyResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Money, via: body}
+- entity: skill.vision.MultiImage
+  file: grpc/harix/vision/vision.proto
+  fields: 5
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: skill.vision.Object.Result
+  file: grpc/harix/vision/vision.proto
+  fields: 2
+  relationships:
+  - {kind: has_many, target: skill.vision.ImageResponse.Object.Result.Label, via: labels}
+  - {kind: has_many, target: skill.vision.ImageResponse.Object.Result.Location, via: location}
+- entity: skill.vision.ObjectResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Object, via: body}
+- entity: skill.vision.OcrResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Ocr, via: body}
+- entity: skill.vision.Result.Label
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+- entity: skill.vision.Result.Location
+  file: grpc/harix/vision/vision.proto
+  fields: 4
+- entity: skill.vision.Result.Position
+  file: grpc/harix/vision/vision.proto
+  fields: 7
+- entity: skill.vision.SingleImage
+  file: grpc/harix/vision/vision.proto
+  fields: 5
+  relationships:
+  - {kind: has_one, target: common.CommonReqInfo, via: common_req_info}
+- entity: skill.vision.Vending.Result
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_many, target: skill.vision.ImageResponse.Vending.Result.Position, via: position}
+- entity: skill.vision.VendingResponse
+  file: grpc/harix/vision/vision.proto
+  fields: 3
+  relationships:
+  - {kind: has_one, target: common.CommonRspInfo, via: common_rsp_info}
+  - {kind: has_one, target: skill.vision.ImageResponse.Vending, via: body}

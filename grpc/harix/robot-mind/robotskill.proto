@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package robotmind;
+
+import "common/common.proto";
+
+option java_package = "com.cloudminds.harix.skill.robotskill";
+option java_outer_classname = "RobotSkillServiceProto";
+
+message EnableSkillRequest {
+  common.CommonReqInfo common_req_info = 1;
+  bool ability = 2;
+  string param = 3;
+  string sub_addr = 4;
+  string sub_name = 5;
+  string extra_type = 6;
+}
+
+message EnableSkillResponse {
+  common.CommonRspInfo common_resp_info = 1;
+  string result = 2;
+}
+
+message ActionRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string id = 2;
+  string param = 3;
+  string context = 4;
+}
+
+message ActionResponse {
+  common.CommonRspInfo common_resp_info = 1;
+  string data = 2;
+}
+
+service RobotSkillService {
+  rpc EnableSkill (robotmind.EnableSkillRequest) returns (robotmind.EnableSkillResponse) {}
+  rpc HandleAction (robotmind.ActionRequest) returns (robotmind.ActionResponse) {}
+}

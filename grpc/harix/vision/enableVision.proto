@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package skill.vision;
+
+import "common/common.proto";
+
+option java_package = "com.cloudminds.harix.skill.vision";
+option java_outer_classname = "EnableVisionProto";
+
+message EnableRequest {
+  enum SubType {
+    RECEPTION = 0;
+    FALL = 1;
+    NAVI = 2;
+  }
+  common.CommonReqInfo common_req_info = 1;
+  skill.vision.EnableRequest.SubType sub_type = 2;
+  bool enable = 3;
+  string sub_addr = 4;
+  string faceset_id = 5;
+}
+
+message EnableResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  bool enable = 2;
+}
+
+service EnableVision {
+  rpc enable (skill.vision.EnableRequest) returns (skill.vision.EnableResponse) {}
+}

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package robotmind;
+
+import "common/common.proto";
+import "robot-mind/robotskill.proto";
+
+option java_package = "com.cloudminds.harix.skill.robotskill";
+option java_outer_classname = "RobotSkillProto";
+option go_package = "cloudminds.com/harix/harix-skill-robot/proto/robot-mind";
+
+message RegisterSkillRequest {
+  string name = 1;
+  string skill_addr = 2;
+  repeated string skills = 3;
+  string skill_info = 4;
+}
+
+service RobotMindService {
+  rpc RegisterSkill (robotmind.RegisterSkillRequest) returns (robotmind.ActionResponse) {}
+  rpc SendUnknownAction (robotmind.ActionRequest) returns (robotmind.ActionResponse) {}
+  rpc SendAction (robotmind.ActionRequest) returns (robotmind.ActionResponse) {}
+}

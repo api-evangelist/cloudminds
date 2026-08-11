@@ -1,0 +1,62 @@
+generated: '2026-08-10'
+method: derived
+source: grpc/harix/serviceapp/recognizeVision.proto, grpc/harix/serviceapp/recognizeSpeech.proto, grpc/harix/robot-mind/robotskill.proto
+spec_type: none
+note: >-
+  CloudMinds publishes no AsyncAPI document and no HTTP webhooks. It does publish a real, machine-readable
+  push/event surface, and this catalog records it: the delivery mechanism is INVERTED gRPC — a skill
+  application registers its own gRPC address with HARIX and then implements a set of server-side services
+  that HARIX calls into to deliver recognition results and vision events. Read "channel" below as a gRPC
+  service method the subscriber implements, not an HTTP callback URL. Derived from the provider's own
+  compiled descriptors; nothing here is invented, and no AsyncAPI was authored on the provider's behalf.
+delivery:
+  mechanism: gRPC server-side callback (subscriber hosts the server)
+  transport_security: none — the SDK's channels are plaintext (see authentication/cloudminds-authentication.yml)
+  envelope_request: common.CommonReqInfo
+  envelope_response: common.CommonRspInfo
+subscription:
+- method: robotmind.RobotMindService/RegisterSkill
+  file: grpc/harix/robot-mind/robotmind.proto
+  registers:
+  - {field: name, meaning: skill name}
+  - {field: skill_addr, meaning: the subscriber's own gRPC address that HARIX will call back}
+  - {field: skills, meaning: repeated list of skill identifiers}
+  - {field: skill_info, meaning: free-form skill metadata}
+  sdk: harix.rdk.subscribe.robot_subscribe.RobotMindSubscribe.subscribe
+- method: robotmind.RobotSkillService/EnableSkill
+  file: grpc/harix/robot-mind/robotskill.proto
+  registers:
+  - {field: ability, meaning: enable/disable}
+  - {field: sub_addr, meaning: subscription callback address}
+  - {field: sub_name, meaning: subscription name}
+  - {field: extra_type, meaning: extension selector}
+  sdk: harix.rdk.subscribe.subscribe.Subscribe.subscribe
+- method: skill.vision.EnableVision/enable
+  file: grpc/harix/vision/enableVision.proto
+  note: Per-skill enablement of the vision event stream.
+- method: skill.asr.EnableSpeech/enable
+  file: grpc/harix/speech/enableSpeech.proto
+  note: Per-skill enablement of speech recognition results.
+event_count: 17
+events:
+- {channel: serviceapp.Vision/BeforeRecognize, payload: serviceapp.ImageInfo, reply: serviceapp.VisionResponse, kind: pre-hook, description: HARIX asks the skill app whether to run recognition on an image and with which credentials (VisionResponse.Propose)}
+- {channel: serviceapp.Vision/CompleteRecognize, payload: serviceapp.VisionRequest, reply: serviceapp.VisionResponse, kind: post-hook, description: Recognition finished — full result delivered to the skill app}
+- {channel: serviceapp.Vision/OcrEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Text recognized in an image}
+- {channel: serviceapp.Vision/MoneyEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Currency/banknote recognized}
+- {channel: serviceapp.Vision/CarPlateEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Vehicle licence plate recognized}
+- {channel: serviceapp.Vision/ObjectEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Object detected}
+- {channel: serviceapp.Vision/FaceEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Face detected}
+- {channel: serviceapp.Vision/FaceAttrEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Face attributes derived}
+- {channel: serviceapp.Vision/CaptionEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Scene caption generated}
+- {channel: serviceapp.Vision/ClassifyEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Image classified}
+- {channel: serviceapp.Vision/FallEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Person-fall detected}
+- {channel: serviceapp.Vision/CompareEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Face/image comparison result}
+- {channel: serviceapp.Vision/VendingEvent, payload: serviceapp.VisionRequest, reply: serviceapp.EventResponse, kind: event, description: Vending-machine interaction recognized}
+- {channel: serviceapp.Speech/OnRecognizeResult, payload: serviceapp.RecognitionResult, reply: serviceapp.RecognitionResponse, kind: event, description: Speech recognition result including the recognized question text and language}
+- {channel: robotmind.RobotSkillService/EnableSkill, payload: robotmind.EnableSkillRequest, reply: robotmind.EnableSkillResponse, kind: control, description: HARIX enables or disables a registered skill on the subscriber}
+- {channel: robotmind.RobotSkillService/HandleAction, payload: robotmind.ActionRequest, reply: robotmind.ActionResponse, kind: command, description: HARIX dispatches an action (id + param + context) to the skill app for execution}
+- {channel: skill.vision.Vision/StreamingRecognize, payload: skill.vision.ImageRequest, reply: skill.vision.ImageResponse, kind: stream, description: 'Client-streaming vision recognition — the skill app streams frames up and receives one aggregated ImageResponse; the sibling skill.asr.Speech/StreamingRecognize is fully bidirectional. Listed here because these are the only continuous surfaces in the contract, though on both the subscriber is the gRPC client rather than the server.'}
+gaps:
+- No AsyncAPI 2.x/3.x document is published for this surface.
+- No retry, ordering, at-least-once/at-most-once or replay semantics are stated anywhere in the contract.
+- No signature or shared secret authenticates a callback, and the channel is plaintext, so a subscriber cannot verify that a delivered event came from HARIX.

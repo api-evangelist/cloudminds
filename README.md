@@ -42,6 +42,21 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-CloudMinds is a company surfaced as a portfolio company of softbank-vision-fund and added to the API Evangelist network as a stub for enrichment. Sector: frontier-tech. This profile is a lead awaiting the enrichment pipeline.
+CloudMinds — now operating as **Dataa Robotics** (达闼机器人) — is a cloud-robotics company surfaced as a
+portfolio company of softbank-vision-fund. Sector: frontier-tech.
+
+**What this profile holds.** CloudMinds publishes no OpenAPI and no public REST API, but it does publish a
+real machine-readable contract: **gRPC / protobuf3, 14 services and 88 RPCs** across robot control,
+navigation, configuration, text-to-speech, skill dispatch, speech recognition, vision recognition and NLU.
+It ships as compiled protobuf descriptors inside the first-party `harix` Python SDK on PyPI, and those
+descriptors were decoded into the `.proto` tree under [`grpc/`](grpc/). See
+[`grpc/cloudminds-grpc-index.yml`](grpc/cloudminds-grpc-index.yml) for the service map and for exactly how
+the decode was done.
+
+**What the surface looks like today.** The `harix` SDK's last release was 2020-02-17. The legacy
+`cloudminds.com` and `harix.cloudminds.com` hosts resolve in DNS but no longer complete a TCP connection.
+The live corporate site is `dataarobotics.com`; the HARIX RDK developer portal it links as "DEVELOPERS"
+(`harix.dataarobotics.com`) also did not answer when probed from a US vantage point on 2026-08-10. The
+company is alive and shipping robots; its developer surface is not being maintained.
 
 Backed by: softbank-vision-fund

@@ -1,0 +1,66 @@
+generated: '2026-08-10'
+method: derived
+source: grpc/harix/**/*.proto, harix 1.0.9 SDK client code (PyPI sdist)
+note: >-
+  CloudMinds publishes no public authentication documentation — the HARIX RDK developer portal does not
+  answer from outside China and there is no OpenAPI with securitySchemes to read. This profile is derived
+  from the provider's own compiled protobuf descriptors and the first-party Python SDK. It records what
+  the shipped contract actually does, which is a finding in itself: there is no credential scheme on the
+  wire.
+summary:
+  types: []
+  api_key_in: []
+  oauth2_flows: []
+  transport_security: none
+  identity_model: identifiers-in-payload
+schemes: []
+findings:
+- id: no-transport-security
+  severity: high
+  detail: >-
+    Every stub in the SDK is built with grpc.insecure_channel(...) — plaintext HTTP/2. No
+    grpc.ssl_channel_credentials, no call credentials, no channel credentials appear anywhere in
+    harix 1.0.9. Any deployment following the first-party SDK carries robot control commands
+    (Move, Rotate, EmergencyStop, ShutdownRobot, RebootRcu) and biometric vision payloads (face,
+    face attributes, face comparison) unencrypted.
+  evidence: harix/rdk/skill/robot_control_api.py, harix/rdk/subscribe/subscribe.py and every other client module
+- id: no-credential-on-the-wire
+  severity: high
+  detail: >-
+    No RPC takes a token, key, signature or authorization field, and no gRPC metadata is attached by
+    the SDK. Caller identity is asserted, not proven — it is carried as plain strings in
+    common.CommonReqInfo (tenant_id, user_id, robot_id, robot_type, service_code). Authorization is
+    therefore entirely the responsibility of the network boundary in front of the gRPC ingress; the
+    published contract has none.
+  evidence: grpc/harix/common/common.proto
+- id: authority-header-as-routing
+  severity: info
+  detail: >-
+    The only channel option the SDK sets is grpc.default_authority, supplied by the integrator. That
+    overrides the HTTP/2 :authority pseudo-header, which is a routing/virtual-host selector at the
+    ingress — not an authentication mechanism, though it is the closest thing to a tenant selector in
+    the transport layer.
+  evidence: harix/rdk/**/__init__ channel construction
+- id: app-key-secret-issued-to-callbacks
+  severity: medium
+  detail: >-
+    The one credential pair that appears anywhere in the contract flows the OTHER direction: when HARIX
+    calls a skill application's Vision/BeforeRecognize callback, the application answers with
+    serviceapp.VisionResponse.Propose { do_recognize, app_key, app_secret, faceset_id } — i.e. the skill
+    app hands HARIX the credentials for a third-party recognition service to use on its behalf. Those
+    fields are transported over the same plaintext channel.
+  evidence: grpc/harix/serviceapp/recognizeVision.proto
+identity_fields:
+- {field: tenant_id, message: common.CommonReqInfo, role: tenant}
+- {field: user_id, message: common.CommonReqInfo, role: end user}
+- {field: robot_id, message: common.CommonReqInfo, role: device}
+- {field: robot_type, message: common.CommonReqInfo, role: device model}
+- {field: service_code, message: common.CommonReqInfo, role: calling service}
+scopes:
+  published: false
+  note: No OAuth surface, so no scopes/ artifact is emitted (per pipeline, scopes/ is OAuth-only).
+docs: null
+docs_note: >-
+  The developer portal that would document authentication —
+  https://harix.dataarobotics.com/#/index/community/home, linked as "DEVELOPERS" from the company's own
+  English homepage — does not complete a TCP connection from a US vantage point (probed 2026-08-10).

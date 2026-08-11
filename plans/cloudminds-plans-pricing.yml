@@ -1,0 +1,16 @@
+generated: '2026-08-10'
+method: searched
+source: https://www.dataarobotics.com/en
+plan_count: 0
+plans: []
+model: contact-sales
+note: >-
+  CloudMinds / Dataa Robotics publishes no pricing page, no plan tiers and no self-serve sign-up. Every
+  product page (HARIX OS, Cloud Ginger, HARIX AGI Platform, RobotGPT and the rest) ends in an "Inquiry"
+  form that collects a name and phone number, plus a sales phone line (010-86482925) and a business
+  address (info@dataarobotics.com). The HARIX RDK developer portal, which is where any developer pricing
+  would live, does not answer from outside China. Recorded as an honest zero: not "we did not look".
+evidence:
+- {url: 'https://www.dataarobotics.com/en/product-70.html', status: 200, finding: 'Inquiry form only — "Please fill in the following information for us to contact you"'}
+- {url: 'https://www.dataarobotics.com/en', status: 200, finding: no pricing or plans link anywhere in navigation or footer}
+- {url: 'https://harix.dataarobotics.com/#/index/community/home', status: 000, finding: TCP connection timeout — developer portal unreachable}

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package serviceapp;
+
+import "common/common.proto";
+
+option java_package = "com.cloudminds.harix.skill.serviceapp";
+option java_outer_classname = "RecognizeSpeechProto";
+
+message RecognitionResult {
+  message Body {
+    int32 flag = 1;
+    string sid = 2;
+    serviceapp.RecognitionResult.Question question = 3;
+  }
+  message Question {
+    string question_id = 1;
+    string lang = 2;
+    string audio = 3;
+    string text = 4;
+    string qaFlag = 5;
+  }
+  common.CommonReqInfo common_req_info = 1;
+  serviceapp.RecognitionResult.Body body = 2;
+  common.Extra extra = 3;
+}
+
+message RecognitionResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+}
+
+service Speech {
+  rpc OnRecognizeResult (serviceapp.RecognitionResult) returns (serviceapp.RecognitionResponse) {}
+}

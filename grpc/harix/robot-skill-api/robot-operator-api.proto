@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package robotSkillApi;
+
+import "common/common.proto";
+
+option go_package = "cloudminds.com/harix/harix-skill-robot/proto/robot-skill-api";
+
+message SwitchRequest {
+  common.CommonReqInfo common_req_info = 1;
+  int32 confidence_index = 2;
+  string reason = 3;
+}
+
+message ConfidenceRequest {
+  common.CommonReqInfo common_req_info = 1;
+  int32 confidence_index = 2;
+}
+
+message OperatorBaseResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  string result = 2;
+}
+
+message ChichatRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string chichat = 2;
+}
+
+message FaceRecognitionRequest {
+  common.CommonReqInfo common_req_info = 1;
+  string body = 2;
+}
+
+service RobotOperatorService {
+  rpc SwitchHi (robotSkillApi.SwitchRequest) returns (robotSkillApi.OperatorBaseResponse) {}
+  rpc UpdateConfidenceIndex (robotSkillApi.ConfidenceRequest) returns (robotSkillApi.OperatorBaseResponse) {}
+  rpc UpdateChichat (robotSkillApi.ChichatRequest) returns (robotSkillApi.OperatorBaseResponse) {}
+  rpc SendFR (robotSkillApi.FaceRecognitionRequest) returns (robotSkillApi.OperatorBaseResponse) {}
+}

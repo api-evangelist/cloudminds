@@ -1,0 +1,46 @@
+generated: '2026-08-10'
+method: searched
+source: https://www.dataarobotics.com/en, https://pypi.org/pypi/harix/json, https://github.com/HarixRDK
+note: >-
+  Searched the live corporate site, PyPI and both GitHub organizations on 2026-08-10 for a versioning
+  policy, deprecation policy, SLA, status page or changelog. None exist publicly. What follows is the
+  observable lifecycle evidence, and it points one direction: the developer surface has not been
+  maintained since 2021.
+versioning:
+  scheme: none-published
+  wire_version: common.CommonReqInfo.version — a caller-set string, '3.0' in the SDK default
+  package_versioning: false
+  package_versioning_note: no protobuf package carries a version segment (common, robotSkillApi, robotmind, skill.asr, skill.vision, skill.nlu, serviceapp)
+  sdk_version: 1.0.9
+  docs: null
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecated_operations: []
+  deprecated_operations_note: no protobuf field or service carries `deprecated = true` in any descriptor
+sla:
+  url: null
+  uptime_target: null
+status_page:
+  url: null
+  probed:
+  - {url: 'https://status.dataarobotics.com/', status: 000}
+changelog:
+  url: null
+  note: no dated changelog or release-notes page is published; PyPI carries only version numbers
+decay_signals:
+- signal: sdk-abandoned
+  detail: harix 1.0.9 is the latest release on PyPI and was published 2020-02-17 — over six years stale as of this pass.
+  source: https://pypi.org/pypi/harix/json
+- signal: repo-abandoned
+  detail: HarixRDK/coffeehouse, the only repository in the HarixRDK organization, was last pushed 2021-09-03. The seven repositories in CloudmindsRobot were last pushed between 2020-11 and 2022-10 and are infrastructure projects (Loki, Superset, Jaeger operators), not API artifacts.
+  source: https://api.github.com/orgs/HarixRDK/repos
+- signal: primary-domain-dead
+  detail: cloudminds.com and harix.cloudminds.com — the hosts this profile previously pointed at, and the homepage recorded in the SDK's own setup.py — resolve in DNS but do not complete a TCP connection to 443 (15s+ timeout, probed 2026-08-10).
+  source: dig + curl
+- signal: portal-unreachable
+  detail: the replacement developer portal harix.dataarobotics.com, linked as "DEVELOPERS" from the company's own English homepage, also fails to complete a TCP connection from a US vantage point.
+  source: curl https://harix.dataarobotics.com/
+- signal: rebrand
+  detail: the company now presents as Dataa Robotics / 达闼机器人 at dataarobotics.com; the English and Chinese sites are live and current (news items through 2024) — the corporate surface is alive, the developer surface is not.
+  source: https://www.dataarobotics.com/en

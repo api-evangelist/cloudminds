@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package robotSkillApi;
+
+import "common/common.proto";
+
+option go_package = "cloudminds.com/harix/harix-skill-robot/proto/robot-skill-api";
+
+message RobotConfigResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  string result = 2;
+}
+
+message ConfigRobotRequest {
+  common.CommonReqInfo common_req_info = 1;
+  repeated string config_names = 2;
+  repeated string config_values = 3;
+}
+
+message GetRobotStateRequest {
+  common.CommonReqInfo common_req_info = 1;
+  repeated string config_names = 2;
+}
+
+message ConfigRecordMediaRequest {
+  common.CommonReqInfo common_req_info = 1;
+  robotSkillApi.StartRecordConfig start_param = 2;
+  robotSkillApi.StopRecordConfig stop_param = 3;
+}
+
+message StartRecordConfig {
+  bool start_rcu_recorder = 2;
+  bool start_rcu_grab = 3;
+  bool start_rtsp_audio = 4;
+  bool start_rtsp_video = 5;
+  string band_width = 6;
+}
+
+message StopRecordConfig {
+  bool stop_rcu_record = 2;
+  bool stop_rtsp_record = 3;
+}
+
+message ConfigAsrRequest {
+  common.CommonReqInfo common_req_info = 1;
+  bool enable_asr = 2;
+}
+
+message ConfigFrRequest {
+  common.CommonReqInfo common_req_info = 1;
+  bool enable_fr = 2;
+}
+
+message ConfigFaceCamRequest {
+  common.CommonReqInfo common_req_info = 1;
+  bool open_face_cam = 2;
+  int32 camera_index = 3;
+}
+
+service RobotConfigService {
+  rpc ConfigRobot (robotSkillApi.ConfigRobotRequest) returns (robotSkillApi.RobotConfigResponse) {}
+  rpc GetRobotState (robotSkillApi.GetRobotStateRequest) returns (robotSkillApi.RobotConfigResponse) {}
+  rpc ConfigRecordMedia (robotSkillApi.ConfigRecordMediaRequest) returns (robotSkillApi.RobotConfigResponse) {}
+  rpc ConfigAsr (robotSkillApi.ConfigAsrRequest) returns (robotSkillApi.RobotConfigResponse) {}
+  rpc ConfigFr (robotSkillApi.ConfigFrRequest) returns (robotSkillApi.RobotConfigResponse) {}
+  rpc ConfigFaceCam (robotSkillApi.ConfigFaceCamRequest) returns (robotSkillApi.RobotConfigResponse) {}
+}

@@ -1,29 +1,73 @@
-generated: '2026-07-18'
+generated: '2026-08-10'
 method: searched
-source: https://pypi.org/project/harix/
+source: https://pypi.org/pypi/harix/json
 description: >-
-  First-party CloudMinds (Dataa Robotics) developer libraries. CloudMinds does
-  not publish a public REST API surface; its developer offering is the HARIX
-  Robot Development Kit (RDK). Verified against PyPI and the HarixRDK GitHub
-  organization at fetch time. The published Python SDK ("Harix Skill Robot SDK")
-  is authored by CloudMinds (harix@cloudminds.com) with homepage cloudminds.com;
-  last release 1.0.9 (2020-02-17). Only libraries confirmed first-party are
-  marked official:true.
+  First-party CloudMinds (Dataa Robotics) developer libraries. CloudMinds publishes no public REST API;
+  its developer offering is the HARIX Robot Development Kit (RDK), and the one published client library
+  is the "harix" Python SDK. Re-verified against the PyPI JSON API, the HarixRDK and CloudmindsRobot
+  GitHub organizations, npm, Maven Central, NuGet, RubyGems, crates.io, Packagist and the Go module
+  proxy on 2026-08-10 — no library exists on any registry other than PyPI. Only libraries confirmed
+  first-party are marked official:true.
 packages:
-  - language: python
-    registry: pypi
-    name: harix
-    url: https://pypi.org/project/harix/
-    source: https://harix.cloudminds.com/
-    install: pip install harix
-    version: 1.0.9
-    license: MIT
-    description: HARIX Skill Robot SDK — development kit for building CloudMinds robot skills.
-    author: CloudMinds (harix@cloudminds.com)
-    official: true
+- language: python
+  registry: pypi
+  name: harix
+  url: https://pypi.org/project/harix/
+  source: https://harix.dataarobotics.com/#/index/community/home
+  install: pip install harix
+  version: 1.0.9
+  published: '2020-02-17'
+  releases: 8
+  first_published: '2019'
+  license: MIT
+  requires_python: '>=3.5.1'
+  dependencies: [googleapis-common-protos==1.6.0, grpcio==1.24.3, grpcio-tools==1.24.3]
+  description: >-
+    HARIX Skill Robot SDK — gRPC client for building CloudMinds robot skills. Ships the compiled
+    protobuf descriptors for the entire HARIX contract (14 services, 88 RPCs), which is where the
+    grpc/ artifacts in this repo were decoded from.
+  author: CloudMinds (harix@cloudminds.com)
+  homepage_declared: https://www.cloudminds.com
+  official: true
+  currency:
+    status: stale
+    note: >-
+      1.0.9 is both the latest and the last release, published 2020-02-17 — over six years old at this
+      pass, and older than the 2021 RDK sample repository it is meant to support. Its declared homepage
+      (https://www.cloudminds.com) no longer completes a TCP connection. It also pins grpcio==1.24.3
+      (October 2019) with `==`, so it cannot be installed alongside any modern gRPC stack.
 repositories:
-  - name: HarixRDK/coffeehouse
-    url: https://github.com/HarixRDK/coffeehouse
-    description: CloudMinds Robotics Development Kit (RDK).
-    license: Apache-2.0
-    official: true
+- name: HarixRDK/coffeehouse
+  url: https://github.com/HarixRDK/coffeehouse
+  description: CloudMinds Robotics Development Kit (RDK) sample — Unreal Engine blueprint assets plus documentation images. Contains no source code, no .proto files and no API definitions.
+  license: Apache-2.0
+  last_pushed: '2021-09-03'
+  official: true
+- name: CloudmindsRobot/dagger
+  url: https://github.com/CloudmindsRobot/dagger
+  description: Loki-based log query and management system, derived from CloudMinds' internal "Dayu" infrastructure platform. Internal tooling, not an API client.
+  last_pushed: '2021-03-05'
+  official: true
+  client_library: false
+- name: CloudmindsRobot/superBI
+  url: https://github.com/CloudmindsRobot/superBI
+  description: Enterprise BI application built on Apache Superset. Internal tooling, not an API client.
+  last_pushed: '2021-03-29'
+  official: true
+  client_library: false
+- name: CloudmindsRobot/gmgo
+  url: https://github.com/CloudmindsRobot/gmgo
+  description: Go crypto and net/http package based on SM2/SM3/SM4 for Hyperledger Fabric. General-purpose, not a HARIX client.
+  last_pushed: '2021-03-26'
+  official: true
+  client_library: false
+registries_checked:
+- {registry: pypi, query: harix, result: 1 package}
+- {registry: pypi, query: 'harix-rdk / harix-sdk / cloudminds', result: 404 on all}
+- {registry: npm, query: 'harix, cloudminds', result: 0 packages}
+- {registry: maven-central, query: cloudminds, result: 0 artifacts}
+- {registry: nuget, query: cloudminds, result: 0 packages}
+- {registry: rubygems, query: harix, result: 0 gems}
+- {registry: crates.io, query: harix, result: 0 crates}
+- {registry: packagist, query: cloudminds, result: 0 relevant packages}
+- {registry: proxy.golang.org, query: cloudminds.com/harix/harix-skill-robot, result: not published (the go_package option in the protos points at an internal module path)}

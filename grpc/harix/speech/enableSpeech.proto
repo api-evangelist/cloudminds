@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package skill.asr;
+
+import "common/common.proto";
+
+option java_package = "com.cloudminds.harix.skill.asr";
+option java_outer_classname = "EnableSpeechProto";
+
+message EnableRequest {
+  enum SubType {
+    RECEPTION = 0;
+    DIALOG = 1;
+  }
+  common.CommonReqInfo common_req_info = 1;
+  skill.asr.EnableRequest.SubType sub_type = 2;
+  bool enable = 3;
+  string sub_addr = 4;
+}
+
+message EnableResponse {
+  common.CommonRspInfo common_rsp_info = 1;
+  bool enable = 2;
+}
+
+service EnableSpeech {
+  rpc enable (skill.asr.EnableRequest) returns (skill.asr.EnableResponse) {}
+}

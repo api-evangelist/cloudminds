@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package common;
+
+import "google/protobuf/struct.proto";
+import "common/common.proto";
+
+option java_package = "com.cloudminds.harix.common";
+option go_package = "cloudminds.com/harix/harix-skill-robot/proto/common";
+
+message SwMessage {
+  message SwQaData {
+    message Question {
+      string lang = 1;
+      string text = 2;
+      string qaFlag = 3;
+      string questionId = 4;
+      string audio = 5;
+      string image = 6;
+    }
+    message Answer {
+      message Tts {
+        message TtsAction {
+          string name = 1;
+          map<string, google.protobuf.Value> param = 2;
+        }
+        string text = 1;
+        string lang = 2;
+        common.SwMessage.SwQaData.Answer.Tts.TtsAction action = 3;
+        string audio = 4;
+        string emoji = 5;
+        string payload = 6;
+        string type = 7;
+      }
+      float score = 1;
+      string responder = 2;
+      repeated common.SwMessage.SwQaData.Answer.Tts tts = 3;
+      repeated string image = 4;
+      string qrCode = 5;
+    }
+    message DialogTree {
+      message DialogTreeState {
+        string state = 1;
+        string template = 2;
+      }
+      string currentstate = 1;
+      repeated common.SwMessage.SwQaData.DialogTree.DialogTreeState subtree = 2;
+    }
+    message HaContext {
+      message HaQaHistoryItem {
+        common.SwMessage.SwQaData.Question question = 1;
+        repeated common.SwMessage.SwQaData.Answer answer = 2;
+      }
+      repeated common.SwMessage.SwQaData.HaContext.HaQaHistoryItem history = 1;
+    }
+    common.SwMessage.SwQaData.Question question = 1;
+    repeated common.SwMessage.SwQaData.Answer answer = 2;
+    common.SwMessage.SwQaData.DialogTree tree = 3;
+    repeated string similars = 4;
+    common.SwMessage.SwQaData.HaContext context = 5;
+  }
+  common.CommonReqInfo common_req_info = 1;
+  common.SwMessage.SwQaData data = 2;
+}
