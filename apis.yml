@@ -46,6 +46,19 @@ tags:
 - gRPC
 - Protobuf
 - Robot Operating System
+- Computer-Vision
+- Speech Recognition
+tags_raw:
+- Company
+- Frontier Tech
+- Robotics
+- Cloud Robotics
+- Artificial Intelligence
+- Robot Development Kit
+- HARIX
+- gRPC
+- Protobuf
+- Robot Operating System
 - Computer Vision
 - Speech Recognition
 apis:
@@ -62,6 +75,13 @@ apis:
     supplied parameter bound per robot deployment.'
   humanURL: https://harix.dataarobotics.com/#/index/community/home
   tags:
+  - Robotics
+  - gRPC
+  - Robot Control
+  - Navigation
+  - Computer-Vision
+  - Speech Recognition
+  tags_raw:
   - Robotics
   - gRPC
   - Robot Control
