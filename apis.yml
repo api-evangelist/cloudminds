@@ -61,7 +61,7 @@ tags:
 - gRPC
 - Protobuf
 - Robot Operating System
-- Computer-Vision
+- Computer Vision
 - Speech Recognition
 tags_raw:
 - Company
@@ -76,6 +76,7 @@ tags_raw:
 - Robot Operating System
 - Computer Vision
 - Speech Recognition
+- Computer-Vision
 apis:
 - aid: cloudminds:harix-robot-skill-api
   name: HARIX Robot Skill API (gRPC)
@@ -94,7 +95,7 @@ apis:
   - gRPC
   - Robot Control
   - Navigation
-  - Computer-Vision
+  - Computer Vision
   - Speech Recognition
   tags_raw:
   - Robotics
@@ -103,6 +104,7 @@ apis:
   - Navigation
   - Computer Vision
   - Speech Recognition
+  - Computer-Vision
   properties:
   - type: Protobuf
     url: grpc/cloudminds-grpc-index.yml
